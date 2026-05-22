@@ -1,0 +1,54 @@
+This repository accompanies the article
+"Vitality as a Landauer Efficiency of Self-Modeling".
+
+==============================================================================
+TEXT, FIGURES, AND DATA
+==============================================================================
+
+The manuscript (paper/main.md, paper/main.ru.md), supplementary
+material (paper/supplementary.md, paper/supplementary.ru.md), the
+bibliography (paper/refs.bib), the graphical abstract
+(paper/graphical-abstract.svg, paper/graphical-abstract.preview.png),
+the documentation under docs/, and the prose, READMEs, and
+expected-output files under worked-example/ are licensed under the
+
+    Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+SPDX-License-Identifier: CC-BY-4.0
+Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+Human-readable summary: https://creativecommons.org/licenses/by/4.0/
+
+You are free to share and adapt this material for any purpose, even
+commercially, provided you give appropriate credit, provide a link to
+the license, and indicate if changes were made.
+
+==============================================================================
+SOURCE CODE
+==============================================================================
+
+The Python source code under worked-example/ (the *.py files) is
+licensed separately under the MIT License; see worked-example/LICENSE.
+
+SPDX-License-Identifier: MIT
+
+==============================================================================
+THIRD-PARTY MATERIAL (NOT COVERED BY THE LICENSES ABOVE)
+==============================================================================
+
+paper/Definitions/ contains the MDPI Entropy LaTeX template files
+(mdpi.cls, mdpi.bst, journalnames.tex, mdpi_apacite.{sty,bst},
+mdpi_chicago.bst, and the MDPI / ORCID / "updates" logos). These are
+the property of MDPI AG and are redistributed under MDPI's standard
+author terms for use with their journal templates. They are NOT
+covered by the CC-BY-4.0 or MIT licenses above; for any reuse outside
+the scope of preparing an MDPI submission, refer to MDPI's terms or
+download the template directly from https://www.mdpi.com/authors/latex.
+
+paper/main.tex is generated from paper/main.md and reuses MDPI
+template macros; the prose and equations within it remain under
+CC-BY-4.0 as part of the manuscript. paper/main.pdf is the rendered
+manuscript under CC-BY-4.0.
+
+==============================================================================
+
+Copyright (c) 2026 Alexander Andriishin.

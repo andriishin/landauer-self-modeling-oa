@@ -1,0 +1,38 @@
+========================================================================
+eta_L for Earth's biosphere — § 3.7 (annual window)
+========================================================================
+
+Inputs:
+  T (surface)           =    288.0    K
+  NPP                   = 1.00e+14  W
+  tau (annual cycle)    = 3.156e+07  s
+  I_pred (biomass eq.)  = 1.00e+24  bits
+
+Derived:
+  k_B * T * ln 2        = 2.756e-21  J/bit
+  E_actual = NPP * tau  = 3.156e+21  J/year
+  N_max                 = 1.145e+42  bits/year
+
+Result:
+  eta_L (exergetic)     = 8.733e-19
+
+Sensitivity over alternative I_pred and tau choices:
+------------------------------------------------------------------------
+    I_pred (bits)                    tau           eta_L
+------------------------------------------------------------------------
+     1e15 (atm. pools)           1 day        3.19e-25
+     1e15 (atm. pools)          1 year        8.73e-28
+     1e15 (atm. pools)    1 millennium        8.73e-31
+    1e21 (eco. memory)           1 day        3.19e-19
+    1e21 (eco. memory)          1 year        8.73e-22
+    1e21 (eco. memory)    1 millennium        8.73e-25
+  1e24 (unique genome)           1 day        3.19e-16
+  1e24 (unique genome)          1 year        8.73e-19
+  1e24 (unique genome)    1 millennium        8.73e-22
+
+Cross-check vs paper § 3.7 (annual window, biomass-equivalent I_pred):
+  eta_L ~ 1e-18                                           OK
+
+Status: methodological calibration. Single-compressor reading; the
+alternative reading (biosphere as overlapping family of subsystems)
+is discussed in § 3.7 and remains an open empirical question.

@@ -1,0 +1,36 @@
+==============================================================================
+eta_L for LLM-as-corporation — § 3.4 extended boundary
+==============================================================================
+
+Energy budget (annual, frontier-AI lab order-of-magnitude):
+  data center                 3.15e+15 J/year
+  office & operations         3.15e+14 J/year
+  supply chain (amortized)    3.15e+16 J/year
+  total E_actual              3.50e+16 J/year
+
+Predictive information:
+  training corpus in weights  1.00e+12 bits
+  operational memory          1.00e+11 bits
+  market intelligence         1.00e+10 bits
+  total I_pred                1.11e+12 bits
+
+Derived:
+  T (office)                  300.0 K
+  k_B * T * ln 2              2.871e-21 J/bit
+  N_max  (exergetic)          1.218e+37 bits
+  N_max  (computational)      1.218e+35 bits
+
+Result:
+  eta_L^corp  (exergetic)     9.114e-26
+  eta_L^corp  (computational) 9.114e-24
+
+Reading.
+  Through both denominators, eta_L^corp is positive but vanishingly
+  small. The corporation has a much larger absolute predictive
+  structure than a bacterial cell, but its energy budget scales
+  much faster than its information-relevant operations: most of
+  the joules go to logistics, manufacturing, HVAC, and cooling
+  overhead, not to bit-flipping in support of self-model maintenance.
+
+Cross-check vs paper § 3.4:
+  eta_L^corp ~ 10^-25 (exergetic)                          OK

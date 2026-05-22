@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use these materials, please cite the archived Zenodo deposit."
+title: "Vitality as a Landauer Efficiency of Self-Modeling — open materials and reproducible computations"
+abstract: "Open-access materials accompanying the article «Vitality as a Landauer Efficiency of Self-Modeling» (Entropy, MDPI): manuscript (Russian primary, English translation), supplementary material, bibliography, graphical abstract, and self-contained reproducible Python worked examples for six paradigm cases."
+type: software
+authors:
+  - family-names: Andriishin
+    given-names: Alexander
+    orcid: "https://orcid.org/0009-0000-4739-4017"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20262947
+    description: "Versioned Zenodo archive of this repository"
+doi: 10.5281/zenodo.20262947
+url: "https://github.com/andriishin/landauer-self-modeling-oa"
+repository-code: "https://github.com/andriishin/landauer-self-modeling-oa"
+license:
+  - CC-BY-4.0
+  - MIT
+date-released: "2026-05-18"
+version: "1.0.0"
+keywords:
+  - Landauer principle
+  - predictive information
+  - thermodynamics of computation
+  - definition of life
+  - vitality
+  - self-modeling
+  - free energy principle
+  - astrobiology

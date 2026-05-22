@@ -1,0 +1,58 @@
+========================================================================
+eta_L for a large city + I_v composite-formula demonstration
+========================================================================
+
+PART 1 — eta_L (formula 1), reproducible from the energy budget
+------------------------------------------------------------------------
+  T (temperate climate) =    285.0    K
+  k_B * T * ln 2        = 2.727e-21  J/bit
+  Window                = 1 year (3.16e+07 s)
+
+  Singapore:
+    population          = 5.70e+06  people
+    E_actual/year       = 1.00e+19  J/year
+    I_pred (admin, <=)  = 1.00e+10  bits
+    N_max (per year)    = 3.666e+39  bits
+    eta_L (exergetic)   = 2.727e-30
+  Detroit:
+    population          = 3.50e+06  people
+    E_actual/year       = 5.00e+18  J/year
+    I_pred (admin, <=)  = 1.00e+10  bits
+    N_max (per year)    = 1.833e+39  bits
+    eta_L (exergetic)   = 5.455e-30
+
+  eta_L(Detroit)/eta_L(Singapore) = 2.00x
+  Camertone claim: a city is structurally complex yet eta_L
+  is vanishing (~3e-30) — vitally negligible. No cohort or
+  I_v is needed for this; every number above is reproducible
+  from the inputs in this file.
+
+PART 2 — I_v composite, formula (2)+(2a): METHOD demo on a
+SYNTHETIC cohort (illustrative placeholders, NOT real cities)
+------------------------------------------------------------------------
+  profile                 T_v    C_v    S_v     I_v  phase
+  uniformly-high        0.875  0.875  0.875   0.875  hyper-vital
+  one-weak-axis         0.750  0.750  0.375   0.595  vital
+  innovation-led        0.375  1.000  0.500   0.572  vital
+  near-median           0.625  0.375  0.750   0.560  vital
+  balanced-mid          0.500  0.500  0.625   0.539  vital
+  energy-rich/weak-S    1.000  0.625  0.188   0.489  transitional
+  structure-led         0.250  0.250  1.000   0.397  proto-vital
+  uniformly-low         0.125  0.125  0.188   0.143  proto-vital
+
+  Reading: 'uniformly-high' tops the composite; any single
+  weak axis ('energy-rich/weak-S', 'one-weak-axis') is pulled
+  down hard by the geometric mean — that is the intended
+  behaviour of formula (2). These profiles are synthetic; the
+  empirical calibration of I_v for specific real cities from
+  open data is separate work and is NOT claimed here.
+
+Cross-check vs paper § 3.6:
+  eta_L ~ 3e-30 (exergetic, large city)                   OK
+  eta_L(Detroit) > eta_L(Singapore) (smaller budget)      OK
+
+Status: PART 1 (eta_L) is the reproducible § 3.6 camertone —
+a city is structurally complex but vitally negligible. PART 2
+demonstrates the I_v composite formula on synthetic profiles;
+no empirical I_v ranking of real cities is asserted (that is
+separate work). Self-contained: standard library only.

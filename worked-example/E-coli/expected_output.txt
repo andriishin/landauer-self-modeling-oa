@@ -1,0 +1,26 @@
+========================================================================
+eta_L for E. coli chemotaxis loop — worked example
+========================================================================
+
+Inputs (central order-of-magnitude estimates):
+  T                     =    310.0    K
+  E_actual^total        = 1.00e-09  J / cell / generation
+  I_pred                = 1.00e+04  bits / cell / generation
+  eta_ex (exergetic)    = 1.00e+00
+  eta_ex (computational)= 1.00e-03
+
+Derived:
+  k_B * T * ln 2        = 2.967e-21  J / bit
+  N_max  (exergetic)    = 3.371e+11  bits / cell
+  N_max  (computational)= 3.371e+08  bits / cell
+
+Result:
+  eta_L  (exergetic)    = 2.967e-08
+  eta_L  (computational)= 2.967e-05
+
+Cross-check vs paper § 3.5 (central values):
+  eta_L  ~ 3e-8  (exergetic)         OK
+  eta_L  ~ 3e-5  (computational)     OK
+
+Status: methodological calibration. Sensitivity over four-order
+input ranges — see sensitivity.py.
