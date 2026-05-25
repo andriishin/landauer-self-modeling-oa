@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use these materials, please cite the archived Zenodo deposit."
-title: "Vitality as a Landauer Efficiency of Self-Modeling — open materials and reproducible computations"
-abstract: "Open-access materials accompanying the article «Vitality as a Landauer Efficiency of Self-Modeling» (Entropy, MDPI): manuscript (Russian primary, English translation), supplementary material, bibliography, graphical abstract, and self-contained reproducible Python worked examples for six paradigm cases."
+title: "Vitality as a Landauer Efficiency of Self-Modeling"
+abstract: "Open-access materials accompanying the article «Vitality as a Landauer Efficiency of Self-Modeling»: manuscript (Russian primary, English translation), supplementary material, bibliography, graphical abstract, and self-contained reproducible Python worked examples for six paradigm cases."
 type: software
 authors:
   - family-names: Andriishin
