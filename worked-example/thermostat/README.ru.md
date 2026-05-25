@@ -1,6 +1,6 @@
 # Worked Example: η_L для биметаллического термостата
 
-Расчёт ландауэровского КПД самомоделирования $\eta_L$ для бытового термостата с биметаллической пластиной. Прилагается к статье «Vitality as a Landauer Efficiency of Self-Modeling» (§ 4.4 + Supplementary § S4.4).
+Расчёт ландауэровского КПД самомоделирования $\eta_L$ для бытового термостата с биметаллической пластиной. Прилагается к статье «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality» (§ 4.4 + Supplementary § S4.4).
 
 ## Содержательный смысл
 

@@ -1,6 +1,6 @@
 # Worked Example: η_L for the biosphere (Gaia)
 
-A computation of the Landauer efficiency of self-modeling $\eta_L$ for Earth's biosphere as a single system. Companion to the paper «Vitality as a Landauer Efficiency of Self-Modeling» (§ 3.7).
+A computation of the Landauer efficiency of self-modeling $\eta_L$ for Earth's biosphere as a single system. Companion to the paper «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality» (§ 3.7).
 
 ## What it means
 

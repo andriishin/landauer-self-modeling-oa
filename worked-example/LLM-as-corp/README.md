@@ -1,6 +1,6 @@
 # Worked Example: η_L for LLM-as-corporation
 
-A computation of the Landauer efficiency of self-modeling $\eta_L$ for an LLM under the extended boundary "model + data center + corporation". Companion to § 3.4 of the paper «Vitality as a Landauer Efficiency of Self-Modeling».
+A computation of the Landauer efficiency of self-modeling $\eta_L$ for an LLM under the extended boundary "model + data center + corporation". Companion to § 3.4 of the paper «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality».
 
 ## What it means
 

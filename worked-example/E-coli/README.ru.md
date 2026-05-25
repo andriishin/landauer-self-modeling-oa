@@ -1,6 +1,6 @@
 # Worked Example: η_L для хемотаксической петли *E. coli*
 
-Воспроизводимый расчёт ландауэровского КПД самомоделирования $\eta_L$ для бактериальной хемотаксической петли *E. coli*. Прилагается к статье «Vitality as a Landauer Efficiency of Self-Modeling» (§ 3.5 + Supplementary § S3.5).
+Воспроизводимый расчёт ландауэровского КПД самомоделирования $\eta_L$ для бактериальной хемотаксической петли *E. coli*. Прилагается к статье «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality» (§ 3.5 + Supplementary § S3.5).
 
 ## Содержимое
 

@@ -1,4 +1,4 @@
-# Worked Examples for «Vitality as a Landauer Efficiency of Self-Modeling»
+# Worked Examples for «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality»
 
 Воспроизводимые расчёты $\eta_L$ и $I_v$ для пяти камертонных систем статьи. Каждая папка — самодостаточный пакет (Python script + README + expected output) с ссылкой на конкретную секцию paper'а.
 

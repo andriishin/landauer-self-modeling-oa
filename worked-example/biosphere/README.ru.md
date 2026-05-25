@@ -1,6 +1,6 @@
 # Worked Example: η_L для биосферы (Гея)
 
-Расчёт ландауэровского КПД самомоделирования $\eta_L$ для биосферы Земли как единой системы. Прилагается к § 3.7 статьи «Vitality as a Landauer Efficiency of Self-Modeling».
+Расчёт ландауэровского КПД самомоделирования $\eta_L$ для биосферы Земли как единой системы. Прилагается к § 3.7 статьи «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality».
 
 ## Содержательный смысл
 

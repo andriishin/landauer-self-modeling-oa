@@ -1,6 +1,6 @@
 # Worked Example: η_L для LLM-as-corporation
 
-Расчёт ландауэровского КПД самомоделирования $\eta_L$ для LLM в расширенной границе «модель + дата-центр + корпорация». Прилагается к § 3.4 статьи «Vitality as a Landauer Efficiency of Self-Modeling».
+Расчёт ландауэровского КПД самомоделирования $\eta_L$ для LLM в расширенной границе «модель + дата-центр + корпорация». Прилагается к § 3.4 статьи «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality».
 
 ## Содержательный смысл
 

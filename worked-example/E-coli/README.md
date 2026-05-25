@@ -1,6 +1,6 @@
 # Worked Example: η_L for the *E. coli* chemotaxis loop
 
-A reproducible computation of the Landauer efficiency of self-modeling $\eta_L$ for the bacterial chemotaxis loop of *E. coli*. Companion to the paper «Vitality as a Landauer Efficiency of Self-Modeling» (§ 3.5 + Supplementary § S3.5).
+A reproducible computation of the Landauer efficiency of self-modeling $\eta_L$ for the bacterial chemotaxis loop of *E. coli*. Companion to the paper «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality» (§ 3.5 + Supplementary § S3.5).
 
 ## Contents
 

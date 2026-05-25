@@ -1,6 +1,6 @@
 # Worked Example: η_L for a bimetallic thermostat
 
-A computation of the Landauer efficiency of self-modeling $\eta_L$ for a household thermostat with a bimetallic strip. Companion to the paper «Vitality as a Landauer Efficiency of Self-Modeling» (§ 4.4 + Supplementary § S4.4).
+A computation of the Landauer efficiency of self-modeling $\eta_L$ for a household thermostat with a bimetallic strip. Companion to the paper «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality» (§ 4.4 + Supplementary § S4.4).
 
 ## What it means
 

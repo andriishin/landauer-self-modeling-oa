@@ -1,6 +1,6 @@
 # Worked Example: η_L of a large city + I_v formula demonstration
 
-Companion to § 3.6 of the paper «Vitality as a Landauer Efficiency of Self-Modeling». The script is self-contained (Python standard library only; no external, empirical, or unpublished dependency) and has two **clearly separated** parts.
+Companion to § 3.6 of the paper «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality». The script is self-contained (Python standard library only; no external, empirical, or unpublished dependency) and has two **clearly separated** parts.
 
 ## Part 1 — η_L (the camertone claim of § 3.6)
 

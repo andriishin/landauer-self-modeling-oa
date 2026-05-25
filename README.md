@@ -1,6 +1,6 @@
-# Vitality as a Landauer Efficiency of Self-Modeling — open materials
+# Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality — open materials
 
-Open-access materials for the article **«Vitality as a Landauer Efficiency of Self-Modeling»** (Russian primary; English translation included).
+Open-access materials for the article **«Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality»** (Russian primary; English translation included).
 
 The article formulates vitality as a dimensionless *efficiency* — the Landauer ratio
 
@@ -64,6 +64,6 @@ The output should match the committed `expected_output.txt` up to floating-point
 
 Archived materials (this repository):
 
-> Andriishin, A. *Vitality as a Landauer Efficiency of Self-Modeling.* Zenodo, 2026. https://doi.org/10.5281/zenodo.20262947
+> Andriishin, A. *Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality.* Zenodo, 2026. https://doi.org/10.5281/zenodo.20262947
 
 The deposit is published on Zenodo with the DOI above. A machine-readable citation is in [`CITATION.cff`](./CITATION.cff). The journal version of record will be added as a separate reference upon acceptance.

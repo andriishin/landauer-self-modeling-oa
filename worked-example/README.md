@@ -1,4 +1,4 @@
-# Worked Examples for «Vitality as a Landauer Efficiency of Self-Modeling»
+# Worked Examples for «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality»
 
 Reproducible computations of $\eta_L$ and $I_v$ for the five paradigm ("tuning-fork") systems of the paper. Each folder is a self-contained package (Python script + README + expected output) cross-referenced to a specific section of the paper.
 
