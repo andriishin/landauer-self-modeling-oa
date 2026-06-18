@@ -37,7 +37,7 @@ LN2 = math.log(2)
 # ---------------------------------------------------------------------------
 
 # Operating environment.
-T_ROOM = 295.0  # K, indoor temperature serving as Landauer thermostat
+T_ROOM = 300.0  # K, indoor temperature serving as Landauer thermostat (Supplementary § S4.4)
 
 # Control characteristics.
 DELTA_T_ROOM = 10.0   # K, range over which room temperature varies
@@ -51,7 +51,7 @@ TAU_D = 1800.0  # s, ~30 min — comparable to room thermal inertia
 P_BIMETAL = 1.0e-6  # W, dissipation localized inside the boundary {bimetal, relay}
 
 # External components, listed for transparency but excluded from the boundary
-# by the counterfactual screening procedure of § 2.2.
+# by the counterfactual ablation procedure of § 2.2.
 P_HEATER_EXTERNAL = 1.0e3      # W, electric heater fed by grid
 P_GRID_EXTERNAL = 0.0          # not part of self-payment
 SETPOINT_FIXED_BY_OPERATOR = True  # not part of self-payment
@@ -86,13 +86,17 @@ def main() -> None:
     i_pred = i_pred_bound(DELTA_T_ROOM, DELTA_T_HYST)
 
     eta_L_trivial = i_pred / nmax
+    # managing reading: η_L = 0 by convention (no own E_actual return loop on
+    # the management task; passive structure per § 2.1). Distinct from the
+    # LLM-narrow case (§ 3.4), where simultaneous T_v + C_v failure leaves
+    # eta_L^int undefined rather than zero.
     eta_L_managing = 0.0
 
     print("=" * 72)
     print("eta_L for a bimetallic room thermostat — § 4.4 boundary case")
     print("=" * 72)
     print()
-    print("Counterfactual screening of the boundary (§ 2.2):")
+    print("Counterfactual ablation of the boundary (§ 2.2):")
     print("  inside  — bimetal strip, relay contacts")
     print(f"            internal dissipation P_int = {P_BIMETAL:.2e} W")
     print("  outside — heater, electric grid, external setpoint operator")
@@ -125,8 +129,9 @@ def main() -> None:
     print("  formal FEP-applicability does not imply self-payment.")
     print()
     print("Cross-check vs paper § 4.4:")
-    print(f"  I_pred <= log2(Delta T_room / Delta T_hyst) ~ 5 bits     ",
-          "OK" if 0 < i_pred <= 5 else f"got {i_pred:.2f}")
+    print(f"  I_pred ≈ log2(Delta T_room / Delta T_hyst) ≈ 3 bits at diurnal Delta T_room ~ 10 K")
+    print(f"                                              (up to ~5 bits at seasonal Delta T_room ~ 30 K)  ",
+          "OK" if 0 < i_pred <= 5.1 else f"got {i_pred:.2f}")
     print(f"  P_internal ~ 1e-6 W                                       ",
           "OK" if math.isclose(P_BIMETAL, 1e-6, rel_tol=0.5) else f"got {P_BIMETAL:.2e}")
 

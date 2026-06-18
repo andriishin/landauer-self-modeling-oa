@@ -1,6 +1,8 @@
-# Vitality as a Landauer Efficiency of Self-Modeling — open materials
+# Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality — open materials
 
-Open-access materials for the article **«Vitality as a Landauer Efficiency of Self-Modeling»** (Russian primary; English translation included), submitted to *Entropy* (MDPI).
+*([Русская версия](./README.ru.md))*
+
+Open-access materials for the article **«Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality»** (Russian primary; English translation included).
 
 The article formulates vitality as a dimensionless *efficiency* — the Landauer ratio
 
@@ -14,26 +16,23 @@ with the **self-payment** requirement that the numerator (predictive information
 
 ```
 paper/
-  main.md                    Manuscript — English (submission language)
-  main.ru.md                 Manuscript — Russian (primary working language)
-  main.tex                   LaTeX source (MDPI Entropy template; generated from main.md)
-  main.pdf                   Compiled manuscript (27 pages)
-  supplementary.md           Supplementary material — English
-  supplementary.ru.md        Supplementary material — Russian
-  refs.bib                   Bibliography
-  graphical-abstract.svg     Graphical abstract (vector)
-  graphical-abstract.preview.png
-  Definitions/               MDPI Entropy template (third-party; see LICENSE)
-worked-example/              Reproducible computations (standard library only)
+  main.md / main.ru.md               Manuscript — English (submission language) / Russian (primary)
+  supplementary.md / supplementary.ru.md   Supplementary material — English / Russian
+  main.tex / main.ru.tex             LaTeX source (Springer Nature sn-jnl; generated from the .md)
+  supplementary.tex / supplementary.ru.tex
+  main.pdf (61 pp) / main.ru.pdf (63 pp)            Compiled manuscript
+  supplementary.pdf (37 pp) / supplementary.ru.pdf (38 pp)
+  refs.bib                           Bibliography
+  sn-jnl.cls, sn-*.bst               Springer Nature template + bibliography styles (third-party; see LICENSE)
+worked-example/                      Reproducible computations (standard library only)
   E-coli/  thermostat/  city/  biosphere/  LLM-as-corp/
 docs/
-  highlights.md              Article highlights
-  graphical-abstract-spec.md Graphical-abstract spec + MDPI export notes
+  highlights.md                      Article highlights
 ```
 
-## Recompiling the PDF
+## Recompiling the PDFs
 
-A precompiled `paper/main.pdf` is included for direct reading. To rebuild it from `main.tex` you need a TeX distribution with `pdflatex` and `bibtex` (MiKTeX or TeX Live). Run the standard MDPI cycle:
+Precompiled PDFs are included for direct reading. To rebuild from the `.tex` you need a TeX distribution with `pdflatex` and `bibtex` (TeX Live or MiKTeX). The Springer Nature template files (`sn-jnl.cls`, `sn-*.bst`) are bundled, so no further downloads are required. The reference style is `sn-mathphys-ay` (author–year). Standard cycle for any document, e.g. `main`:
 
 ```bash
 cd paper
@@ -43,7 +42,7 @@ pdflatex main.tex
 pdflatex main.tex
 ```
 
-The MDPI template files in `paper/Definitions/` are bundled, so no further downloads are required.
+(replace `main` with `supplementary`, `main.ru`, or `supplementary.ru` for the other documents).
 
 ## Reproducing the worked examples
 
@@ -57,13 +56,13 @@ The output should match the committed `expected_output.txt` up to floating-point
 
 ## License
 
-- **Text, figures, data** (manuscript, supplementary, bibliography, graphical abstract, READMEs, expected outputs): **Creative Commons Attribution 4.0 International (CC BY 4.0)** — see [`LICENSE`](./LICENSE).
+- **Text, figures, data** (manuscript, supplementary, bibliography, READMEs, expected outputs): **Creative Commons Attribution 4.0 International (CC BY 4.0)** — see [`LICENSE`](./LICENSE).
 - **Source code** under `worked-example/`: **MIT License** — see [`worked-example/LICENSE`](./worked-example/LICENSE).
 
 ## Citation
 
 Archived materials (this repository):
 
-> Andriishin, A. *Vitality as a Landauer Efficiency of Self-Modeling — open materials and reproducible computations.* Zenodo, 2026. https://doi.org/10.5281/zenodo.20262947
+> Andriishin, A. *Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality.* Zenodo, 2026. https://doi.org/10.5281/zenodo.20262946
 
-The DOI is reserved on Zenodo; it resolves once the deposit is published (at the time of journal submission). A machine-readable citation is in [`CITATION.cff`](./CITATION.cff). The journal version of record (Entropy, MDPI) reference will be added upon publication.
+The deposit is published on Zenodo with the DOI above. A machine-readable citation is in [`CITATION.cff`](./CITATION.cff). The journal version of record will be added as a separate reference upon acceptance.

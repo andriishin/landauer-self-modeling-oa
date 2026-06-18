@@ -6,7 +6,7 @@ Inputs:
   T (surface)           =    288.0    K
   NPP                   = 1.00e+14  W
   tau (annual cycle)    = 3.156e+07  s
-  I_pred (biomass eq.)  = 1.00e+24  bits
+  I_pred (biomass eq.)  = 1.00e+20  bits
 
 Derived:
   k_B * T * ln 2        = 2.756e-21  J/bit
@@ -14,7 +14,7 @@ Derived:
   N_max                 = 1.145e+42  bits/year
 
 Result:
-  eta_L (exergetic)     = 8.733e-19
+  eta_L (exergetic)     = 8.733e-23
 
 Sensitivity over alternative I_pred and tau choices:
 ------------------------------------------------------------------------
@@ -23,15 +23,29 @@ Sensitivity over alternative I_pred and tau choices:
      1e15 (atm. pools)           1 day        3.19e-25
      1e15 (atm. pools)          1 year        8.73e-28
      1e15 (atm. pools)    1 millennium        8.73e-31
-    1e21 (eco. memory)           1 day        3.19e-19
-    1e21 (eco. memory)          1 year        8.73e-22
-    1e21 (eco. memory)    1 millennium        8.73e-25
-  1e24 (unique genome)           1 day        3.19e-16
-  1e24 (unique genome)          1 year        8.73e-19
-  1e24 (unique genome)    1 millennium        8.73e-22
+  1e19 (eco. memory low)           1 day        3.19e-21
+  1e19 (eco. memory low)          1 year        8.73e-24
+  1e19 (eco. memory low)    1 millennium        8.73e-27
+   1e20 (coding-bound)           1 day        3.19e-20
+   1e20 (coding-bound)          1 year        8.73e-23
+   1e20 (coding-bound)    1 millennium        8.73e-26
+  1e22 (eco. memory high)           1 day        3.19e-18
+  1e22 (eco. memory high)          1 year        8.73e-21
+  1e22 (eco. memory high)    1 millennium        8.73e-24
 
-Cross-check vs paper § 3.7 (annual window, biomass-equivalent I_pred):
-  eta_L ~ 1e-18                                           OK
+Cross-check vs paper § 3.7 (annual window, coding-bound I_pred):
+  eta_L (exergetic) ~ 1e-22                               OK
+
+Computational-denominator branch (E_comp = f * NPP * tau):
+------------------------------------------------------------------------
+     f = E_comp/E_actual     N_max^comp (bits/year)     eta_L^comp
+------------------------------------------------------------------------
+                 1.0e-03                  1.145e+39      8.733e-20
+                 3.0e-03                  3.435e+39      2.911e-20
+                 1.0e-02                  1.145e+40      8.733e-21
+
+Cross-check vs paper § 3.7 (computational, central f = 1e-3):
+  eta_L^comp <~ 1e-19                                     OK
 
 Status: methodological calibration. Single-compressor reading; the
 alternative reading (biosphere as overlapping family of subsystems)

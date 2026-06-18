@@ -18,15 +18,13 @@ Derived:
   T (office)                  300.0 K
   k_B * T * ln 2              2.871e-21 J/bit
   N_max  (exergetic)          1.218e+37 bits
-  N_max  (computational)      1.218e+35 bits
 
 Result:
   eta_L^corp  (exergetic)     9.114e-26
-  eta_L^corp  (computational) 9.114e-24
 
 Reading.
-  Through both denominators, eta_L^corp is positive but vanishingly
-  small. The corporation has a much larger absolute predictive
+  Through the exergetic denominator, eta_L^corp is positive but
+  vanishingly small. The corporation has a much larger absolute predictive
   structure than a bacterial cell, but its energy budget scales
   much faster than its information-relevant operations: most of
   the joules go to logistics, manufacturing, HVAC, and cooling

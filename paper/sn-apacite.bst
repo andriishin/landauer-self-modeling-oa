@@ -1,14 +1,25 @@
-%% This is file `mdpi_apacite.bst',
-%% Modified by MDPI according to apacite.bst. (Updated on 12 January 2025)
 %%
-%% The original source files were:
+%% This is file `sn-apacite.bst',
+%% generated with the docstrip utility.
 %%
-%% apacite.dtx  (with options: `bibstyle')
+%% The original source files were: apacite.dtx 
 %% 
-%% This is a generated file.
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either
+%% version 1.3 of this license or (at your option) any later
+%% version.  The latest version of this license is in:
 %% 
-%% Copyright (C) 1994-2013 Erik Meijer and any individual authors listed
-%% elsewhere in this file.
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3 or later is part of all distributions of
+%% LaTeX version 2005/12/01 or later.
+
+FUNCTION {identify.apacite.version}
+{ % Put identifying string in the .blg file
+  "sn-apacite.bst"
+  " [2024/07/19 v1.1 APA bibliography style]"
+  * top$
+}
 
 ENTRY
   { address
@@ -28,6 +39,7 @@ ENTRY
     institution
     journal
     key
+    keywords
     lastchecked
     month
     nihms
@@ -58,6 +70,14 @@ ENTRY
     urldate
     volume
     year
+    eprint
+    archive
+    archivePrefix
+    primaryClass
+    eid
+    adsurl
+    adsnote
+    version
   }
   { cite.order             %% order of first citation
     title.number           %% for sorting titles
@@ -608,7 +628,7 @@ FUNCTION {output.dot.end.block}
     %
 FUNCTION {output.new.block}
 { output.end.block
-  "\newblock " write$ 
+  "\newblock" write$ newline$
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -625,7 +645,7 @@ FUNCTION {output.dot.new.block}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 FUNCTION {start.new.block}
-{ " " write$ newline$
+{ "\unskip\ " write$ newline$
   "\newblock " write$ newline$
 }
 
@@ -633,21 +653,21 @@ FUNCTION {sort.name.format.classic} { "{ll{}}{  f{}}{  vv{}}{  jj{}}" }
 
 FUNCTION {cite.name.format.classic} { "{ll}" }
 
-FUNCTION {author.name.format.classic} { "{ll}{, f{.  }.}{ vv}{, jj}" }
+FUNCTION {author.name.format.classic} { "{ll}{, f{.}.}{ vv}{, jj}" }
 
-FUNCTION {index.name.format.classic} { "{ll}{, f{.  }.}{ vv}{, jj}" }
+FUNCTION {index.name.format.classic} { "{ll}{, f{.}.}{ vv}{, jj}" }
 
 FUNCTION {sort.name.format} { "{vv{}}{ll{}}{  f{}}{  jj{}}" }
 
 FUNCTION {cite.name.format} { "{vv }{ll}" }
 
-FUNCTION {cite.initials.name.format} { "{f{.  }.~~}{vv }{ll}{ jj}" }
+FUNCTION {cite.initials.name.format} { "{f{.}.~~}{vv }{ll}{ jj}" }
 
-FUNCTION {author.name.format} { "{vv }{ll}{, f{.  }.}{, jj}" }
+FUNCTION {author.name.format} { "{vv }{ll}{, f{.}.}{, jj}" }
 
-FUNCTION {editor.name.format} { "{f{.  }.~~}{vv }{ll}{ jj}" }
+FUNCTION {editor.name.format} { "{f{.}.~~}{vv }{ll}{ jj}" }
 
-FUNCTION {index.name.format} { "{vv }{ll}{, f{.  }.}{, jj}" }
+FUNCTION {index.name.format} { "{vv }{ll}{, f{.}.}{, jj}" }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -768,7 +788,7 @@ FUNCTION {check.add.initials}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION {tentative.cite.num.names.field} %% MDPI Modified
+FUNCTION {tentative.cite.num.names.field}
 { 'field :=
   field num.names$  'numnames :=
   numnames #3 <
@@ -1528,7 +1548,7 @@ FUNCTION {make.name.sort.label}
     %    label (L1) of one of the forms
     %     "Last1  F1"
     %     "Last1  F1   Last2"
-    %     "Last1  F1   zzzz"  ("zzzz" representing et~al.)
+    %     "Last1  F1   zzzz"  ("zzzz" representing et al.)
     % => If more than 2 'authors': make label (L2) for 2nd-6th authors
     %    of one of the forms
     %     "Last2   Last3"
@@ -1564,7 +1584,7 @@ FUNCTION {make.name.sort.label}
     % Format first author
   field  #1  sort.name.format  format.name$
     %
-    % Format the second author if there are two, or else "zzzz" = et~al.
+    % Format the second author if there are two, or else "zzzz" = et al.
   numnames #1 =
     'skip$
     { numnames #2 =
@@ -1572,11 +1592,11 @@ FUNCTION {make.name.sort.label}
             % Two authors: format second author
           field  #2  "{ll{}}"  format.name$  's :=
           s "others" =
-            { "   zzzz" * }    % Add "et~al."-substitute
+            { "   zzzz" * }    % Add "et al."-substitute
             { "   " * s * }    % Add second author
           if$
         }
-        { "   zzzz" * } % 3 or more authors: add "et~al."-substitute
+        { "   zzzz" * } % 3 or more authors: add "et al."-substitute
       if$
     }
   if$
@@ -1591,7 +1611,7 @@ FUNCTION {make.name.sort.label}
         % Treat last author slightly differently
       numnames name.max >
         { name.max  'lastname  :=
-          "   zzzz"                 % Push "et~al."-substitute on stack
+          "   zzzz"                 % Push "et al."-substitute on stack
         }
         { numnames  'lastname  :=
           ""                        % Push empty string on stack
@@ -1612,12 +1632,12 @@ FUNCTION {make.name.sort.label}
         % "Last" author
       field  lastname  "{ll{}}"  format.name$  's :=
       s "others" =
-        { "zzzz" * }    % Add "et~al."-substitute
+        { "zzzz" * }    % Add "et al."-substitute
         { s * }         % Add last author
       if$
         %
       swap$ *  % Add the previously formatted empty string or
-               % "et~al."-substitute if there are many authors.
+               % "et al."-substitute if there are many authors.
       *        % Add L2 to the earlier labels.
     }
   if$
@@ -1711,7 +1731,7 @@ FUNCTION {make.tentative.sort.label}
     %    label (L1) of one of the forms
     %     "Last1  F1"
     %     "Last1  F1   Last2"
-    %     "Last1  F1   zzzz"  ("zzzz" representing et~al.)
+    %     "Last1  F1   zzzz"  ("zzzz" representing et al.)
     % => If more than 2 'authors': make label (L2) for 2nd-6th authors
     %    of one of the forms
     %     "Last2   Last3"
@@ -1812,7 +1832,7 @@ FUNCTION {make.definitive.name.sort.label}
     %     "Last1  F1   Last2  F2   ...   LastN  FN"
     %     "Last1  F1   Last2  F2   ...   Last6  F6   zzzz"
     %     (where N <= 6 is the total number of authors, and
-    %      "zzzz" represents et~al. if there are more than 6 authors)
+    %      "zzzz" represents et al. if there are more than 6 authors)
     % No author, editor, and key: define title or substitute as sort key.
     %
     % The name field is on top of the stack.
@@ -1840,7 +1860,7 @@ FUNCTION {make.definitive.name.sort.label}
   while$
     % Format last author that must be formatted
   field  nameptr  sort.name.format  format.name$  *
-    % Add et~al. if necessary
+    % Add et al. if necessary
   nameptr numnames  <
     { "   zzzz" * }
     'skip$
@@ -1976,7 +1996,7 @@ FUNCTION {make.sort.title}
                 { note empty$
                     { url empty$
                         { " " }
-                        {url  format.sort.title }
+                        { url  format.sort.title }
                       if$
                     }
                     { note  format.sort.title }
@@ -2061,11 +2081,11 @@ FUNCTION {transform.spaces.and.hyphens}
           % If so, replace and shift two positions.
           s pos #2 substring$  ". " =
           s pos #2 substring$  ".~" = or
-            { t ".  " *  't :=
+            { t "." *  't :=
               pos #2 +  'pos :=
             }
             { s pos #2 substring$  ".-" =
-                { t ".-" *  't :=
+                { t "\BHBI " *  't :=
                   pos #2 +  'pos :=
                 }
                 { % neither is true, copy one character and shift one position
@@ -2111,7 +2131,7 @@ FUNCTION {transform.spaces.and.hyphens}
       % This should not have happened, but make the best out of it.
       % Push last two characters of s on the stack, i.e., ". " or ".-".
       s len #1 - #2 substring$
-      % Remove ".  " or "\BHBI " from t
+      % Remove "\BPBI " or "\BHBI " from t
       t text.length$ 'len :=   % Length of t (no. of characters)
       t #1 len #6 - substring$
       % Concatenate and assign to t
@@ -2243,21 +2263,23 @@ FUNCTION {format.index.name}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-FUNCTION {comma.between.two} { ", " } % MDPI Modified
+FUNCTION {comma.between.two} { "\BCBT {}" }
 
 FUNCTION {comma.between.names} { ", " }
 
-FUNCTION {comma.before.last} { ", " }
+FUNCTION {comma.before.last} { "\BCBL {}" }
 
-FUNCTION {dots.before.last} { ", \dots{} " }
+FUNCTION {dots.before.last} { "\BDBL {}" }
 
-FUNCTION {and.before.last} { " \BBA\ " }
+FUNCTION {and.before.last} { "\ \BBA {} " }
 
-FUNCTION {et.al.string.cite} { " et~al." }
+FUNCTION {no.and.before.last} { " " }
 
-FUNCTION {et.al.string} { " et~al." }
+FUNCTION {et.al.string.cite} { "\ \protect \BOthers {.}" }
 
-FUNCTION {et.al.string.period} { " et~al." }
+FUNCTION {et.al.string} { "\ \BOthers {.}" }
+
+FUNCTION {et.al.string.period} { "\ \BOthersPeriod {.}" }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2265,7 +2287,7 @@ FUNCTION {add.name.index}
 {   %
     %
   make.index
-    { "" * write$ 
+    { "%" * write$ newline$
         % Check for corporate author
       field is.bibcorporate
         { "\corporateAX{" }
@@ -2275,9 +2297,9 @@ FUNCTION {add.name.index}
       field nameptr sort.name.format  format.name$  sortify  write$ newline$
       "@"  write$
       field nameptr format.index.name
-      "}"  *   write$ 
+      "}%"  *   write$ newline$
     }
-    { "" * write$  }
+    { "%" * write$ newline$ }
   if$
 }
 
@@ -2290,9 +2312,9 @@ FUNCTION {make.name.cite.label}
   field  num.names$  'numnames :=   % numnames is the total number of names
                                     %   contained in field
     %
-    % It is implicit in the APA manual that if "et~al." would refer
+    % It is implicit in the APA manual that if "et al." would refer
     % to exactly one author, then this author should be named
-    % instead of "et~al."
+    % instead of "et al."
     %
   format.num.names  numnames  #1  -  =
     { numnames  'format.num.names  := }
@@ -2312,7 +2334,7 @@ FUNCTION {make.name.cite.label}
     'skip$
     { format.num.names  #1  =
         {   %
-            % First author et~al.
+            % First author et al.
             %
           et.al.string.cite write$
         }
@@ -2325,10 +2347,10 @@ FUNCTION {make.name.cite.label}
               field  nameptr  cite.name.format  format.name$  's :=
                 %
                 % Check if 2nd author is explicit "others".
-                % If so, insert "et~al." string.
+                % If so, insert "et al." string.
                 %
               s "others" =
-                { et.al.string.cite write$ }  % First et~al.
+                { et.al.string.cite write$ }  % First et al.
                 {   %
                     % First \& Second
                     %
@@ -2373,7 +2395,7 @@ FUNCTION {make.name.cite.label}
                   comma.before.last  write$
                     %
                     % Check if this author is explicit "others".
-                    % If so, insert "et~al." string.
+                    % If so, insert "et al." string.
                     %
                   s "others" =
                     { et.al.string.cite  write$ }
@@ -2385,7 +2407,7 @@ FUNCTION {make.name.cite.label}
                 }
                 {   %
                     % This is not the last author.
-                    % Add comma, author name, and "et~al."
+                    % Add comma, author name, and "et al."
                     %
                   comma.between.names  write$
                   s
@@ -2458,17 +2480,17 @@ FUNCTION {make.author.editor.cite.label}
             % Use title or other description as citation label.
             %
           make.title.cite.label
-          "}{"  write$ 
+          "}{%"  write$ newline$
           make.title.cite.label
         }
         { cite.num.names.full   editor  make.name.cite.label
-          "}{"  write$ 
+          "}{%"  write$ newline$
           cite.num.names.short  editor  make.name.cite.label
         }
       if$
     }
     { cite.num.names.full   author  make.name.cite.label
-      "}{"  write$ 
+      "}{%"  write$ newline$
       cite.num.names.short  author  make.name.cite.label
     }
   if$
@@ -2483,11 +2505,11 @@ FUNCTION {make.author.cite.label}
         % Use title or other description as citation label.
         %
       make.title.cite.label
-      "}{"  write$ 
+      "}{%"  write$ newline$
       make.title.cite.label
     }
     { cite.num.names.full   author  make.name.cite.label
-      "}{"  write$ 
+      "}{%"  write$ newline$
       cite.num.names.short  author  make.name.cite.label
     }
   if$
@@ -2546,8 +2568,8 @@ FUNCTION {protect.year}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION {make.definitive.year.label} % MDPI Modified
-{ "{" 
+FUNCTION {make.definitive.year.label}
+{ "{\protect \APACyear {"
   originalyear empty$
     { protect.year }
     { originalyear "\bibnodate" =    % date of original publication unknown
@@ -2570,14 +2592,13 @@ FUNCTION {make.definitive.year.label} % MDPI Modified
       if$
     }
   if$
-  * "}" * write$
+  * "}}%" * write$ newline$
     %
     % Add "a", "b", etc. when necessary.
     %
   "{\protect \APACexlab {" "}}"
   make.definitive.year.supplement enclose.check
 }
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2587,13 +2608,13 @@ FUNCTION {make.cite.labels}
     % Write a few lines for testing purposes.
     %
   test
-    { "\bibitem[] {} \fullciteA {" cite$ * "}" *  write$ newline$
-      "\bibitem[] {} \citeA {"     cite$ * "}" *  write$ newline$
+    { "\bibitem [] {} \fullciteA {" cite$ * "}" *  write$ newline$
+      "\bibitem [] {} \citeA {"     cite$ * "}" *  write$ newline$
     }
     'skip$
   if$
     %
-  "\bibitem[\protect\citeauthoryear{" write$ 
+  "\bibitem [\protect \citeauthoryear {%" write$ newline$
     %
     % When key or firstkey is available, this takes precedence.
     %
@@ -2602,7 +2623,7 @@ FUNCTION {make.cite.labels}
         % Full cite: firstkey.
         %
       firstkey  write$
-      "}{"     write$
+      "}{%"     write$ newline$
         %
         % Short cite: if key is not empty and cite.initials is 0,
         % then key, else firstkey.
@@ -2621,7 +2642,7 @@ FUNCTION {make.cite.labels}
             % Both full and short labels are key.
             %
           key    write$
-          "}{"  write$ 
+          "}{%"  write$ newline$
           key    write$
         }
         {   % No key or firstkey, so find out which field
@@ -2640,19 +2661,23 @@ FUNCTION {make.cite.labels}
       if$
     }
   if$
-  "}{"  write$ 
+  "}{%"  write$ newline$
     %
     % Make year label that's used for citations
     %
   make.definitive.year.label  write$
-  "}]{"                      write$ 
+  "}]{%"                      write$ newline$
   cite$                       write$
-  "} "                        write$ 
-  % author.year.sort.label      write$ % for testing purposes
-  % year.label                  write$ % for testing purposes
+  "} "                        write$ newline$
+  % author.year.sort.label      write$ newline$ % for testing purposes
+  % year.label                  write$ newline$ % for testing purposes
     %
     % If the item is used in a meta-analysis, indicate this with
     % a star.
+    %
+  "\APACinsertmetastar {%"    write$ newline$
+  cite$                       write$
+  "}%"                        write$ newline$
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2708,11 +2733,12 @@ FUNCTION {authors.editors.reflist.apa5}
     %
     % Enclose authors in APACrefauthors environment to allow crude style
     % options in \LaTeX.
-	newline$
+  "\begin{APACrefauthors}%"
+  write$ newline$
     %
-    % It is kind of explicit in the APA manual that if "et~al." would
+    % It is kind of explicit in the APA manual that if "et al." would
     % refer to exactly one author (the 7th), then this author should
-    % still be replaced by "et~al.", unlike with citations.
+    % still be replaced by "et al.", unlike with citations.
     % So format.num.names is not adapted.
     %
     % Format first author
@@ -2734,7 +2760,7 @@ FUNCTION {authors.editors.reflist.apa5}
     'skip$
     { format.num.names  #1  =
         {   %
-            % First author et~al.
+            % First author et al.
             %
           comma.between.two
             %
@@ -2758,11 +2784,11 @@ FUNCTION {authors.editors.reflist.apa5}
               field  nameptr  format.author.name  's :=
                 %
                 % Check if 2nd author is explicit "others".
-                % If so, insert "et~al." string.
+                % If so, insert "et al." string.
                 %
               s "others" =
                 {   %
-                    % First et~al.
+                    % First et al.
                     % Add period if required.
                     %
                   dot
@@ -2821,7 +2847,7 @@ FUNCTION {authors.editors.reflist.apa5}
                   comma.before.last  write$
                     %
                     % Check if this author is explicit "others".
-                    % If so, insert "et~al." string.
+                    % If so, insert "et al." string.
                     %
                   s "others" =
                     {   %
@@ -2847,7 +2873,7 @@ FUNCTION {authors.editors.reflist.apa5}
                 }
                 {   %
                     % This is not the last author.
-                    % Add comma, author name, and "et~al."
+                    % Add comma, author name, and "et al."
                     %
                   comma.between.names  write$
                   s
@@ -2870,22 +2896,28 @@ FUNCTION {authors.editors.reflist.apa5}
       if$
     }
   if$
+    %
+    % End APACrefauthors environment.
+  "\end{APACrefauthors}%"
+  write$ newline$
 }
 
 FUNCTION {authors.reflist.apa6}
 { 'field  :=
   'dot    :=
   field  num.names$  'numnames :=
-  numnames  #20  >
-    { #20        'format.num.names := }
+  numnames  #7  >
+    { #7        'format.num.names := }
     { numnames  'format.num.names := }
   if$
-  newline$
+  "\begin{APACrefauthors}%"
+  write$ newline$
   #1  'nameptr :=
   field  nameptr  format.author.name
   numnames  #1  =
     { dot
-        { add.period$ }
+        { %add.period$ 
+}
         'skip$
       if$
       add.name.index
@@ -2913,7 +2945,7 @@ FUNCTION {authors.reflist.apa6}
             }
           if$
         }
-        { %% for nameptr := 20  to  format.num.names - 1  do
+        { %% for nameptr := 2  to  format.num.names - 1  do
           #2  'nameptr  :=
             { nameptr  format.num.names  < }
             { comma.between.names write$
@@ -2935,7 +2967,7 @@ FUNCTION {authors.reflist.apa6}
                   if$
                   write$
                 }
-                { and.before.last  write$
+                { no.and.before.last  write$
                   dot
                     { s add.period$ }
                     { s }
@@ -2953,6 +2985,8 @@ FUNCTION {authors.reflist.apa6}
       if$
     }
   if$
+  "\end{APACrefauthors}%"
+  write$ newline$
 }
 
 FUNCTION {format.author.names}
@@ -2991,7 +3025,7 @@ FUNCTION {format.editor.names}
                                     %   contained in field
   numnames  'format.num.names  :=   % Format all authors
   format.num.names   name.max  >    % Unless this exceeds the maximum of 6.
-    { #1 'format.num.names := }     % Then it becomes 1 (First et~al.)
+    { #1 'format.num.names := }     % Then it becomes 1 (First et al.)
     'skip$
   if$
     %
@@ -3002,7 +3036,7 @@ FUNCTION {format.editor.names}
   numnames  #1  =
     'skip$
     { format.num.names  #1  =
-        { et.al.string * } % First editor et~al., no comma.
+        { et.al.string * } % First editor et al., no comma.
         { numnames  #2  =
             {   %
                 % Given that  format.num.names > 1, it is 2.
@@ -3011,10 +3045,10 @@ FUNCTION {format.editor.names}
               field  #2  format.editor.name  's :=
                 %
                 % Check if 2nd editor is explicit "others".
-                % If so, insert "et~al." string.
+                % If so, insert "et al." string.
                 %
               s "others" =
-                { et.al.string  * }          % First et~al.
+                { et.al.string  * }          % First et al.
                 { and.before.last  *  s * }  % First \& Second
               if$
             }
@@ -3052,7 +3086,7 @@ FUNCTION {format.editor.names}
                   comma.before.last  *
                     %
                     % Check if this editor is explicit "others".
-                    % If so, insert "et~al." string.
+                    % If so, insert "et al." string.
                     %
                   s "others" =
                     { et.al.string     *     }
@@ -3061,7 +3095,7 @@ FUNCTION {format.editor.names}
                 }
                 {   %
                     % This is not the last editor.
-                    % Add comma, editor name, and "et~al."
+                    % Add comma, editor name, and "et al."
                     %
                   comma.between.names  * s *
                   comma.before.last    * et.al.string  *
@@ -3237,7 +3271,29 @@ FUNCTION {format.in.trans}
     %  or "In editor (Ed.)" if editor not equal to translator
     %
 FUNCTION {format.in.editors.trans}
-{ "\BIn{} "
+%{ "\BIn{} " Commented by SPI
+{ " " 
+  editor empty$
+    { translator empty$
+        'skip$
+        { format.translators.in.line * ", " * }
+      if$
+    }
+    { translator empty$
+        { format.editors.in.line * }
+        { editor translator =
+            { format.editors.trans.in.line * }
+            { format.editors.in.line * }
+          if$
+        }
+      if$
+      ", " *
+    }
+  if$
+}
+
+FUNCTION {in.format.in.editors.trans}
+{ "\BIn{} " 
   editor empty$
     { translator empty$
         'skip$
@@ -3296,12 +3352,57 @@ FUNCTION {format.year.month.day.check}
   if$
   "}" *
 }
+FUNCTION {format.year.nomonth.day.check}
+{ "\APACrefYearMonthDay{"
+  protect.year *
+    %
+    % Add "a", "b", etc. when necessary.
+    %
+  make.definitive.year.supplement *
+  "}{" *
+    %
+    % Add month and day when present.
+    %
+  month empty$
+    'skip$
+    {  }
+  if$
+  "}{" *
+  day empty$
+    'skip$
+    { day * }
+  if$
+  "}" *
+}
 
 FUNCTION {format.atitle.no.dot}
-{}
+{ "{\BBOQ}" swap$
+  "{\BBCQ}" swap$
+  duplicate$ empty$
+    'skip$
+    { duplicate$
+      % Two arguments: Title twice: (1) don't change case; (2) change case
+      "\APACrefatitle {" swap$ * "} {" * swap$
+      "t" change.case$
+      * "}" *
+    }
+  if$
+  enclose.check
+}
 
 FUNCTION {format.atitle.dot}
-{add.period$
+{ "{\BBOQ}" swap$
+  "{\BBCQ}" swap$
+  duplicate$ empty$
+    'skip$
+    { duplicate$
+      % Two arguments: Title twice: (1) don't change case; (2) change case
+      "\APACrefatitle {" swap$ * "} {" * swap$
+      "t" change.case$
+      * "}" * add.period$
+    }
+  if$
+  enclose.check
 }
 
 FUNCTION {format.atitle.connect}
@@ -3479,7 +3580,7 @@ FUNCTION { format.journal.vol.num.pages.check }
       "}{" *                     volume  "" connect.check
       "}{" *                     number  "" connect.check
       "}{" *                     swap$   "" connect.check
-      "}"  *
+      ",}"  *
     }
   if$
 }
@@ -3710,8 +3811,8 @@ FUNCTION {format.rnumber.check}
 { duplicate$ empty$
     'skip$
     { duplicate$ multi.result.check
-        { "Nos." swap$ tie.or.space.connect }
-        { "No."  swap$ tie.or.space.connect }
+        { "\BNUMS" swap$ tie.or.space.connect }
+        { "\BNUM"  swap$ tie.or.space.connect }
       if$
     }
   if$
@@ -3765,18 +3866,22 @@ FUNCTION {howpublished.block}
     }
   if$
 }
-
 FUNCTION {begin.end.url.env}
-{ "Available online: " % MDPI modified
-  urldate empty$
-    { " (accessed on)." }
-    { " (accessed on " urldate * ")." * } % MDPI modified
+{ "\begin{APACrefURL} "
+  lastchecked empty$
+    { urldate empty$
+        'skip$
+        { "[{" * urldate * "}]" * }
+      if$
+    }
+    { "[{" * lastchecked * "}]" * }
   if$
+  " \end{APACrefURL} "
 }
 
 FUNCTION {begin.end.doi.env}
-{ "" % MDPI modified
-  ""
+{ "\begin{APACrefDOI} "
+  " \end{APACrefDOI} "
 }
 
 FUNCTION {begin.end.msg.env}
@@ -3792,7 +3897,8 @@ FUNCTION {format.url}
       if$
     }
   if$
-  "\url{" url * "}" *
+%%"\url{" url * "}" *
+  "{" url * "}" *
   enclose.check
 }
 FUNCTION {url.block}
@@ -3810,7 +3916,7 @@ FUNCTION {url.block}
 }
 FUNCTION {format.doi}
 { begin.end.doi.env
-  "{\url{https://doi.org/" doi * "}}." * % MDPI modified
+  "\doi{" doi * "}" *
   enclose.check
 }
 FUNCTION {doi.block}
@@ -3929,14 +4035,14 @@ FUNCTION {format.orig.note}
   if$
 }
 FUNCTION {fin.entry}
-{ doi empty$
-    'skip$
-    { output.new.block
-      format.doi
-    }
-  if$
+{ %doi empty$
+  %  'skip$
+  %  { output.new.block
+  %    format.doi
+  %  }
+  % if$
   output.end.block
-%  "\PrintBackRefs{\CurrentBib}" write$ newline$
+  "\PrintBackRefs{\CurrentBib}" write$ newline$
   test
     { "\vspace{\baselineskip}" write$ newline$ }
     'skip$
@@ -3944,12 +4050,63 @@ FUNCTION {fin.entry}
 }
 FUNCTION {fin.entry.2}
 { doi.block
- % "\PrintBackRefs{\CurrentBib}" write$ newline$
+  "\PrintBackRefs{\CurrentBib}" write$ newline$
   test
     { "\vspace{\baselineskip}" write$ newline$ }
     'skip$
   if$
 }
+
+FUNCTION {format.archive}
+{
+  archivePrefix empty$
+      { "" }
+      { archivePrefix ":" *}
+  if$           
+}
+
+FUNCTION {format.primaryClass}
+{
+  primaryClass empty$
+      { "" }
+      { " {[" primaryClass * "]}" *}
+  if$           
+}
+
+FUNCTION {format.eprint}
+{ eprint empty$
+     { ""}
+     { archive empty$
+          {"{\href{https://arxiv.org/abs/" eprint * "}" * 
+             "{{" * format.archive * eprint * "}}}" *}
+          { "{\href{https://arxiv.org/abs/" eprint * "}" * 
+             "{{" * format.archive * eprint * "}}}" *}
+       if$
+     }
+     if$
+}
+
+FUNCTION {format.softmisc.archive}
+{
+  archivePrefix empty$
+      { "" }
+      { "" }
+  if$           
+}
+
+FUNCTION {format.softmisc.eprint}
+{ eprint empty$
+     { ""}
+     { archive empty$
+          {"{\href{https://ascl.net/" format.softmisc.archive * eprint * "}" *
+             "{{" * format.archive * eprint * "}}}" *}
+          {"{\href{https://ascl.net/" format.softmisc.archive * eprint * "}" *
+             "{{" * format.archive * eprint * "}}}" *}
+       if$
+     }
+     if$
+}
+
 FUNCTION {periodical}
 {
   author empty$
@@ -4000,11 +4157,18 @@ FUNCTION {periodical}
     %   and check if journal not empty
     %
   format.journal.vol.num.pages.check
-    %
+%  output.new.block
+  doi empty$
+    'skip$
+    { output.new.block
+      format.doi
+    }
+  if$
+     %
     % if not empty, insert howpublished.
     % (used if article is retrieved from the internet)
     %
-  format.howpublished  add.period$
+%  format.howpublished  add.period$
       %
       % format url
       %
@@ -4022,8 +4186,12 @@ FUNCTION {periodical}
     % possible reprint and optional note
     %
   format.orig.note
+  output.new.block
+  format.eprint
+  output.new.block
+  format.primaryClass
   fin.entry
-}
+  }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %
@@ -4167,6 +4335,54 @@ FUNCTION {incollection}
     {
       output.new.block
       format.in.editors.trans
+      format.bvol.edition.pages
+      booktitle  format.btitle.connect * add.period$
+    }
+  if$
+  format.address.publisher.check
+  format.howpublished  add.period$
+  url empty$
+    'skip$
+    {
+      duplicate$ empty$
+        'skip$
+        { output.new.block }
+      if$
+      format.url
+    }
+  if$
+  format.orig.note
+  fin.entry
+}
+
+FUNCTION {inbookcollection}
+{ author empty$
+    { editor.ne.trans
+        { format.atitle.type.trans.check }
+        { format.atitle.type.check }
+      if$
+      output.new.block
+      format.year.month.day.check   add.period$
+    }
+    { format.authors                start.new.block
+      format.year.month.day.check   output.dot.new.block
+      editor.ne.trans
+        { format.atitle.type.trans.check }
+        { format.atitle.type.check }
+      if$
+    }
+  if$
+  editor     empty$
+  translator empty$ and
+  edition    empty$ and
+  volume     empty$ and
+  pages      empty$ and
+  chapter    empty$ and
+  booktitle  empty$ and
+    'skip$
+    {
+      output.new.block
+      in.format.in.editors.trans
       format.bvol.edition.pages
       booktitle  format.btitle.connect * add.period$
     }
@@ -4629,6 +4845,14 @@ FUNCTION {format.btitle.type.num}
   if$
 }
 
+FUNCTION {format.version}
+{
+  version empty$
+      { "" } 
+      { " " * version *}
+  if$           
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %
     % title of message or software-related thing (used in misc)
@@ -4793,7 +5017,7 @@ FUNCTION {misc}
               if$
               format.year.month.day.check  add.period$
             }
-            { output.misctitle.type.num    output.new.block
+            { output.misctitle.type.num    %output.new.block
               format.year.month.day.check  add.period$
               format.howpublished          add.period$
             }
@@ -4805,7 +5029,7 @@ FUNCTION {misc}
             %
         { format.editors.as.authors        start.new.block
           format.year.month.day.check      output.dot.new.block
-          output.misctitle.type.num
+          output.misctitle.type.num	   output.dot.new.block
           format.howpublished              add.period$
         }
       if$
@@ -4862,6 +5086,109 @@ FUNCTION {misc}
   fin.entry
 }
 
+FUNCTION {softmisc}
+{   %
+    % To handle @manual: use type.2 instead of type.
+  type.2 empty$
+  type   empty$ not and
+    { type 'type.2 := }
+    'skip$
+  if$
+    %
+  author empty$
+        %
+        % no author: possibly edited item with editors as authors
+        %
+    { editor empty$
+            %
+            % no author or editor: title/type serves as author.
+            % title formatted as book title
+            %
+            % if no title and no type, howpublished is title
+            %
+        { title  empty$
+          type.2 empty$ and
+            { howpublished empty$
+                { "No author, editor, title, type, and howpublished in "
+                  cite$ * warning$
+                  ""
+                }
+                { "\APAChowpublished{" howpublished * "}" * add.period$ }
+              if$
+              format.year.month.day.check  add.period$
+            }
+            { output.misctitle.type.num    %output.new.block
+              format.year.month.day.check  add.period$
+              format.howpublished          add.period$
+            }
+          if$
+        }
+            %
+            % format editor and year, and check if year is present
+            % format book title, volume, and edition and check if title present
+            %
+        { format.editors.as.authors        start.new.block
+          format.year.month.day.check      output.dot.new.block
+          output.misctitle.type.num	   output.dot.new.block
+          format.howpublished              add.period$
+        }
+      if$
+    }
+        %
+        % format author and year, and check if year is present
+        % format book title, volume, and edition
+        % and check if title or type present
+        %
+    { format.authors                   start.new.block
+      format.year.nomonth.day.check      output.dot.new.block
+      output.misctitle.type.num
+      format.version
+      format.howpublished              add.period$
+    }
+  if$
+      %
+  address   empty$
+  publisher empty$ and
+      'skip$
+      { % Clear the stack
+        duplicate$ empty$
+          'skip$
+          { output.new.block }
+        if$
+        format.address.publisher add.period$
+      }
+  if$
+      %
+      % format url
+      %
+  url empty$
+    'skip$
+    { % Clear the stack
+      duplicate$ empty$
+        'skip$
+        { output.new.block }
+      if$
+      format.url
+    }
+  if$
+      %
+      % format optional note
+      %
+  note empty$
+    'skip$
+    { % Clear the stack
+      duplicate$ empty$
+        'skip$
+        { output.new.block }
+      if$
+      format.note
+    }
+  if$
+  output.dot.new.block
+  format.softmisc.eprint
+  fin.entry
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %
     % for legal cases and other cases that need to be
@@ -4904,7 +5231,7 @@ FUNCTION {booklet}
     % part of a book
     %
 FUNCTION {inbook}
-{ incollection }
+{ inbookcollection }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %
@@ -4957,7 +5284,10 @@ FUNCTION {begin.bib}
     'skip$
     { preamble$ write$ newline$ }
   if$
-  "\begin{thebibliography}{999}"  write$ newline$
+  "\begin{thebibliography}{}"  write$ newline$
+  "\renewcommand{\doi}[1]{\url{https://doi.org/#1}}"
+  write$ newline$
+  "\bibcommenthead" write$ newline$
 }
 FUNCTION {end.bib}
 { newline$
@@ -4969,6 +5299,7 @@ FUNCTION {write.bbl.entry}
   call.type$
 }
 READ
+EXECUTE { identify.apacite.version }
 EXECUTE { initialize }
 EXECUTE { init.old.number }
 ITERATE { make.citeorder.number }
@@ -4998,4 +5329,4 @@ ITERATE { write.bbl.entry }
 EXECUTE { end.bib }
 
 %%
-%% End of file `apacite.bst'.
+%% End of file `sn-apacite.bst'.

@@ -26,10 +26,11 @@ from eta_L_ecoli import (
 # Parameter ranges (literature plausibility intervals)
 # ---------------------------------------------------------------------------
 
-# Predictive information: 10^3 to 10^5 bits per cell per generation.
-# Lower bound: minimal chemotactic memory of ~10^3 bits (basic adaptation);
-# upper bound: aggressive estimate from Cheong et al. 2011.
-I_PRED_RANGE = (1.0e3, 1.0e5)
+# Predictive information: 10^2 to 10^4 bits per cell per generation.
+# Lower bound: minimal chemotactic memory ~10^2 bits (basic adaptation lowered
+# by cooperative-coupling correction of ~1 order vs single-cluster estimate);
+# upper bound: ~10^4 bits, the central estimate from Cheong et al. 2011.
+I_PRED_RANGE = (1.0e2, 1.0e4)
 
 # Total exergetic budget per cell per generation:
 # 10^-10 (slow growth, minimal medium) to 10^-8 (rapid growth, rich medium).

@@ -5,8 +5,9 @@ The paper § 3.4 distinguishes three readings of LLM as a candidate for
 positive eta_L:
 
   - operational: 'model + data center'  → eta_L > 0 by external metrics
-  - interpretive: 'weights at inference' → eta_L = 0 (no causally
-    relevant environment for the weights themselves)
+  - interpretive: 'weights at inference' → eta_L undefined (simultaneous
+    T_v + C_v failure: no causally relevant own environment AND no
+    internal dissipation paying for the weights)
   - extension: 'model + data center + corporation' → eta_L > 0 but the
     measured object is the corporation, not the model.
 
@@ -63,10 +64,6 @@ I_PRED_OPERATIONS = 1.0e11
 I_PRED_MARKET = 1.0e10
 I_PRED_TOTAL = I_PRED_TRAINING + I_PRED_OPERATIONS + I_PRED_MARKET
 
-# Computational denominator: fraction of total energy actually spent on
-# irreversible information operations (compute, storage refresh, network).
-ETA_EX_COMPUTATIONAL = 1.0e-2
-
 
 # ---------------------------------------------------------------------------
 # Calculation
@@ -94,11 +91,8 @@ def main() -> None:
     cost = landauer_cost_per_bit(T_OFFICE)
 
     nmax_ex = n_max(E_ACTUAL_TOTAL_PER_YEAR, eta_ex=1.0, temperature=T_OFFICE)
-    nmax_comp = n_max(E_ACTUAL_TOTAL_PER_YEAR, eta_ex=ETA_EX_COMPUTATIONAL,
-                      temperature=T_OFFICE)
 
     eta_L_ex = eta_L(I_PRED_TOTAL, nmax_ex)
-    eta_L_comp = eta_L(I_PRED_TOTAL, nmax_comp)
 
     print("=" * 78)
     print("eta_L for LLM-as-corporation — § 3.4 extended boundary")
@@ -120,15 +114,13 @@ def main() -> None:
     print(f"  T (office)                  {T_OFFICE:.1f} K")
     print(f"  k_B * T * ln 2              {cost:.3e} J/bit")
     print(f"  N_max  (exergetic)          {nmax_ex:.3e} bits")
-    print(f"  N_max  (computational)      {nmax_comp:.3e} bits")
     print()
     print("Result:")
     print(f"  eta_L^corp  (exergetic)     {eta_L_ex:.3e}")
-    print(f"  eta_L^corp  (computational) {eta_L_comp:.3e}")
     print()
     print("Reading.")
-    print("  Through both denominators, eta_L^corp is positive but vanishingly")
-    print("  small. The corporation has a much larger absolute predictive")
+    print("  Through the exergetic denominator, eta_L^corp is positive but")
+    print("  vanishingly small. The corporation has a much larger absolute predictive")
     print("  structure than a bacterial cell, but its energy budget scales")
     print("  much faster than its information-relevant operations: most of")
     print("  the joules go to logistics, manufacturing, HVAC, and cooling")

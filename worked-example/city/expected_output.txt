@@ -27,6 +27,29 @@ PART 1 — eta_L (formula 1), reproducible from the energy budget
   I_v is needed for this; every number above is reproducible
   from the inputs in this file.
 
+  Conservative upper bound (direct municipal electricity only,
+  E_actual ~ 1e+17 J/year -> smallest N_max):
+    N_max (per year)    = 3.666e+37  bits
+    eta_L <=              2.727e-28
+    cross-check vs main § 3.6 (<~ 3e-28): OK
+
+  Computational-denominator branch
+  (E_comp = f * E_actual, f ~ 1e-4 central, see main § 3.6):
+  ----------------------------------------------------------------------
+  city            f = E_comp/E_actual         eta_L^comp
+  ----------------------------------------------------------------------
+  Singapore                   1.0e-05          2.727e-25
+  Singapore                   1.0e-04          2.727e-26
+  Singapore                   1.0e-03          2.727e-27
+  Detroit                     1.0e-05          5.455e-25
+  Detroit                     1.0e-04          5.455e-26
+  Detroit                     1.0e-03          5.455e-27
+
+  Note: with f ~ 1e-4 (Singapore), eta_L^comp ~ 3e-26 — matches
+  the main § 3.6 statement that the computational denominator
+  brings the city ~4 orders closer to the biological range,
+  yet still ~21 orders below the bacterial reference.
+
 PART 2 — I_v composite, formula (2)+(2a): METHOD demo on a
 SYNTHETIC cohort (illustrative placeholders, NOT real cities)
 ------------------------------------------------------------------------
@@ -50,6 +73,7 @@ SYNTHETIC cohort (illustrative placeholders, NOT real cities)
 Cross-check vs paper § 3.6:
   eta_L ~ 3e-30 (exergetic, large city)                   OK
   eta_L(Detroit) > eta_L(Singapore) (smaller budget)      OK
+  eta_L^comp ~ 3e-26 (Singapore, f = 1e-4)                OK
 
 Status: PART 1 (eta_L) is the reproducible § 3.6 camertone —
 a city is structurally complex but vitally negligible. PART 2

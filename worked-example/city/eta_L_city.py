@@ -67,6 +67,20 @@ CITY_ENERGY: dict[str, dict] = {
     },
 }
 
+# Computational-denominator fraction for the city: share of metropolitan
+# dissipation funding irreversible information operations of administrative
+# computation (data centres + operational electrics of admin offices),
+# main § 3.6 central estimate ~1e-4. Sensitivity scan over [1e-5, 1e-3].
+E_COMP_FRACTION_CITY = 1.0e-4
+E_COMP_FRACTION_CITY_RANGE = (1.0e-5, 1.0e-3)
+
+# Conservative upper bound on eta_L (main § 3.6): direct municipal electricity
+# consumption only (~10 GW * 1 year ~ 1e17 J/year) is the smallest plausible
+# E_actual and hence yields the largest (loosest) upper bound on eta_L. This
+# gives eta_L <~ 3e-28, vs ~3e-30 at the full ~1e19 J/year supply-chain budget.
+E_DIRECT_CONSUMPTION_PER_YEAR = 1.0e17  # J/year, direct electricity only
+I_PRED_ADMIN_BOUND = 1.0e10             # bits, carrier-capacity upper bound
+
 
 def landauer_cost_per_bit(temperature: float) -> float:
     return K_BOLTZMANN * temperature * LN2
@@ -105,6 +119,30 @@ def report_eta_L() -> dict[str, float]:
     print("  is vanishing (~3e-30) — vitally negligible. No cohort or")
     print("  I_v is needed for this; every number above is reproducible")
     print("  from the inputs in this file.")
+    print()
+    nmax_direct = n_max_year(E_DIRECT_CONSUMPTION_PER_YEAR, T_TEMPERATE)
+    eta_direct = eta_L(I_PRED_ADMIN_BOUND, nmax_direct)
+    ok_bound = "OK" if 1e-28 < eta_direct < 1e-27 else f"got {eta_direct:.2e}"
+    print("  Conservative upper bound (direct municipal electricity only,")
+    print(f"  E_actual ~ {E_DIRECT_CONSUMPTION_PER_YEAR:.0e} J/year -> smallest N_max):")
+    print(f"    N_max (per year)    = {nmax_direct:>8.3e}  bits")
+    print(f"    eta_L <=              {eta_direct:>8.3e}")
+    print(f"    cross-check vs main § 3.6 (<~ 3e-28): {ok_bound}")
+    print()
+    print("  Computational-denominator branch")
+    print("  (E_comp = f * E_actual, f ~ 1e-4 central, see main § 3.6):")
+    print("  " + "-" * 70)
+    print(f"  {'city':<12} {'f = E_comp/E_actual':>22} {'eta_L^comp':>18}")
+    print("  " + "-" * 70)
+    for name, eta_ex_value in out.items():
+        for f in (1.0e-5, 1.0e-4, 1.0e-3):
+            eta_comp = eta_ex_value / f
+            print(f"  {name:<12} {f:>22.1e} {eta_comp:>18.3e}")
+    print()
+    print("  Note: with f ~ 1e-4 (Singapore), eta_L^comp ~ 3e-26 — matches")
+    print("  the main § 3.6 statement that the computational denominator")
+    print("  brings the city ~4 orders closer to the biological range,")
+    print("  yet still ~21 orders below the bacterial reference.")
     print()
     return out
 
@@ -202,6 +240,10 @@ def main() -> None:
           "OK" if all(1e-30 < e < 1e-28 for e in eta.values()) else "MISMATCH")
     print("  eta_L(Detroit) > eta_L(Singapore) (smaller budget)     ",
           "OK" if eta["Detroit"] > eta["Singapore"] else "MISMATCH")
+    eta_comp_singapore = eta["Singapore"] / E_COMP_FRACTION_CITY
+    print("  eta_L^comp ~ 3e-26 (Singapore, f = 1e-4)               ",
+          "OK" if 1e-26 < eta_comp_singapore < 1e-25
+          else f"got {eta_comp_singapore:.2e}")
     print()
     print("Status: PART 1 (eta_L) is the reproducible § 3.6 camertone —")
     print("a city is structurally complex but vitally negligible. PART 2")

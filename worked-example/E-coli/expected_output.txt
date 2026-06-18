@@ -2,7 +2,9 @@
 eta_L for E. coli chemotaxis loop — worked example
 ========================================================================
 
-Inputs (central order-of-magnitude estimates):
+Inputs (point estimates via upper-bound I_pred = 10^4 bits;
+geometric medians of [1e-9,1e-7] / [1e-6,1e-4] sensitivity
+intervals are 1e-8 / 1e-5, used as reference in § 7):
   T                     =    310.0    K
   E_actual^total        = 1.00e-09  J / cell / generation
   I_pred                = 1.00e+04  bits / cell / generation
@@ -18,9 +20,24 @@ Result:
   eta_L  (exergetic)    = 2.967e-08
   eta_L  (computational)= 2.967e-05
 
-Cross-check vs paper § 3.5 (central values):
+Cross-check vs paper § 3.5 (point estimates via upper-bound
+I_pred = 10^4 bits; geometric medians of [1e-9,1e-7] / [1e-6,1e-4]
+ranges are 1e-8 / 1e-5):
   eta_L  ~ 3e-8  (exergetic)         OK
   eta_L  ~ 3e-5  (computational)     OK
+
+
+Cooperative-coupling scan (formula 1 with I_pred / k):
+------------------------------------------------------------------------
+    factor k    I_pred/k (bits)    eta_L (exer.)    eta_L (comp.)
+------------------------------------------------------------------------
+         1.0           1.00e+04        2.967e-08        2.967e-05
+         3.0           3.33e+03        9.889e-09        9.889e-06
+        10.0           1.00e+03        2.967e-09        2.967e-06
+
+Note: cooperative coupling in receptor clusters reduces effective
+I_pred by ~1 order; lower bound of sensitivity interval [1e-9, 1e-7]
+is reached at factor k = 10 (matches § 3.5 lower bound).
 
 Status: methodological calibration. Sensitivity over four-order
 input ranges — see sensitivity.py.

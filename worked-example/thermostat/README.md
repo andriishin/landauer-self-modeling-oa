@@ -1,12 +1,12 @@
 # Worked Example: η_L for a bimetallic thermostat
 
-A computation of the Landauer efficiency of self-modeling $\eta_L$ for a household thermostat with a bimetallic strip. Companion to the paper «Vitality as a Landauer Efficiency of Self-Modeling» (§ 4.4 + Supplementary § S4.4).
+A computation of the Landauer efficiency of self-modeling $\eta_L$ for a household thermostat with a bimetallic strip. Companion to the paper "Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality" (§ 4.4 + Supplementary § S4.4).
 
-## What it means
+## Substantive meaning
 
-The thermostat is a **boundary case**, not a positive one. It *formally satisfies* Friston's free-energy principle (FEP) — it minimizes the error between the setpoint and the observation — but it *does not satisfy the self-payment requirement*: the predictive information about the room is physically paid for by the external power grid, not by the internal dissipation of the bimetal.
+The thermostat is a **boundary case**, not a positive one. It *formally satisfies* Friston's free-energy principle (FEP) — it minimises the error between the setpoint and the observation — but it *does not satisfy the self-payment requirement*: the predictive information about the room is physically paid for by the external power grid, not by the internal dissipation of the bimetal.
 
-This is the **central anti-FEP argument** of the paper. In terms of the counterfactual-screening procedure (§ 2.2):
+This is the **central anti-FEP argument** of the paper. In terms of the counterfactual ablation procedure (§ 2.2):
 
 | Candidate | Inside the boundary? | Why |
 |-----------|----------------------|-----|
@@ -33,7 +33,7 @@ python eta_L_thermostat.py
 
 ## Parameters
 
-- $T_{\text{room}} = 295$ K — room temperature (the thermostat as a Landauer heat-receiver).
+- $T_{\text{room}} = 300$ K — room temperature (the receiving heat bath of Landauer).
 - $\Delta T_{\text{room}} = 10$ K — the range of variation of the room temperature.
 - $\Delta T_{\text{hyst}} = 1$ K — the hysteresis of the bimetallic switch.
 - $\tau_d = 1800$ s (30 min) — the characteristic dissipation window (thermal inertia).
@@ -47,15 +47,15 @@ python eta_L_thermostat.py
 - $\eta_L^{\text{trivial}}$ (holding the bimetal's own shape) $\approx 5.2 \cdot 10^{-18}$ — vanishing, but positive.
 - $\eta_L^{\text{managing}}$ (regulating the room) $= 0$ — the numerator refers to the environment "room + power supply", while the denominator refers only to the bimetal's own dissipation.
 
-The difference between the two numbers is structural, not quantitative: it marks the transition from a Pearl-blanket to a Friston-blanket in the sense of Bruineberg, Dołęga, Dewhurst, Baltieri 2021/2022 ("The Emperor's New Markov Blankets", the mature formalization of the Pearl-/Friston-blanket distinction), as distinct from Bruineberg, Kiverstein, Rietveld 2018 (the ecological-enactive critique of pure FEP, "The anticipating brain is not a scientist"). One and the same physical system admits several self-consistent boundaries; the choice between them is the methodological discipline of self-payment.
+The difference between the two numbers is structural, not quantitative: it marks the transition from a Pearl-blanket to a Friston-blanket in the sense of Bruineberg, Dołęga, Dewhurst, Baltieri 2021/2022 ("The Emperor's New Markov Blankets", the mature formalisation of the Pearl-/Friston-blanket distinction), as distinct from Bruineberg, Kiverstein, Rietveld 2018 (the ecological-enactive critique of pure FEP, "The anticipating brain is not a scientist"). One and the same physical system admits several self-consistent boundaries; the choice between them is the methodological discipline of self-payment.
 
-## Literature
+## References
 
-- **Bruineberg, J.; Dołęga, K.; Dewhurst, J.; Baltieri, M.** The Emperor's New Markov Blankets. *Synthese* **2022**, *199*, 13727–13772. (The mature formalization of the Pearl-/Friston-blanket distinction — `[Bruineberg2022]` in the paper.)
+- **Bruineberg, J.; Dołęga, K.; Dewhurst, J.; Baltieri, M.** The Emperor's New Markov Blankets. *Synthese* **2022**, *199*, 13727–13772. (The mature formalisation of the Pearl-/Friston-blanket distinction — `[Bruineberg2022]` in the paper.)
 - **Bruineberg, J.; Kiverstein, J.; Rietveld, E.** The anticipating brain is not a scientist: the free-energy principle from an ecological-enactive perspective. *Synthese* **2018**, *195*, 2417–2444. (The ecological-enactive critique of pure FEP — `[Bruineberg2018]` in the paper.)
 - **Friston, K.** The free-energy principle: a unified brain theory? *Nat. Rev. Neurosci.* **2010**, *11*, 127–138.
 - **Aguilera, M.; Millidge, B.; Tschantz, A.; Buckley, C. L.** How particular is the physics of the free energy principle? *Phys. Life Rev.* **2022**, *40*, 24–50.
 
 ## Status
 
-The computation is compact (10–15 lines of accounting); its role in the reproducibility of the paper is not quantitative but **demonstrative**: it shows that the counterfactual-screening procedure is trivially realizable, and that distinguishing the "trivial" vs. "managing" readings is computable, not rhetorical.
+The computation is compact (10–15 lines of accounting); its role in the reproducibility of the paper is not quantitative but **demonstrative**: it shows that the counterfactual ablation procedure is trivially realisable, and that distinguishing the "trivial" vs. "managing" readings is computable, not rhetorical.

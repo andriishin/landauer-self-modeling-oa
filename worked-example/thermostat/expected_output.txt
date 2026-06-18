@@ -2,27 +2,27 @@
 eta_L for a bimetallic room thermostat — § 4.4 boundary case
 ========================================================================
 
-Counterfactual screening of the boundary (§ 2.2):
+Counterfactual ablation of the boundary (§ 2.2):
   inside  — bimetal strip, relay contacts
             internal dissipation P_int = 1.00e-06 W
   outside — heater, electric grid, external setpoint operator
             external power     P_ext = 1.00e+03 W
 
 Inputs:
-  T (room thermostat)   =    295.0    K
+  T (room thermostat)   =    300.0    K
   Delta T_room          =     10.0    K
   Delta T_hyst          =      1.0    K
   P_internal            = 1.00e-06  W
   tau_d                 =   1800.0    s
 
 Derived:
-  k_B * T * ln 2        = 2.823e-21  J / bit
+  k_B * T * ln 2        = 2.871e-21  J / bit
   E_actual (internal)   = 1.800e-03  J over tau
-  N_max                 = 6.376e+17  bits
+  N_max                 = 6.270e+17  bits
   I_pred upper bound    =    3.322    bits
 
 Two readings of eta_L:
-  eta_L  (trivial: maintain own shape)   = 5.210e-18
+  eta_L  (trivial: maintain own shape)   = 5.298e-18
   eta_L  (managing: regulate room)        = 0.000e+00
 
 Reading.
@@ -35,5 +35,6 @@ Reading.
   formal FEP-applicability does not imply self-payment.
 
 Cross-check vs paper § 4.4:
-  I_pred <= log2(Delta T_room / Delta T_hyst) ~ 5 bits      OK
+  I_pred ≈ log2(Delta T_room / Delta T_hyst) ≈ 3 bits at diurnal Delta T_room ~ 10 K
+                                              (up to ~5 bits at seasonal Delta T_room ~ 30 K)   OK
   P_internal ~ 1e-6 W                                        OK
