@@ -1,58 +1,84 @@
-# Worked Examples for "Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality"
+# Worked Examples — vitality as self-paid self-modeling
 
-Reproducible computations of $\eta_L$ and $I_v$ for the five paradigm cases of the paper. Each folder is a self-contained package (Python script + README + expected output) keyed to a specific section of the paper.
+Reproducible companions to the paradigm-case analysis of the paper (Andriishin,
+*Theory in Biosciences*, in preparation). Each folder is a self-contained package
+(Python script + README + expected output) keyed to a specific section.
+
+The central quantity is the **predictive fraction**
+
+$$\eta_v = \frac{I_{\text{pred}}}{I_{\text{mem}}} = 1 - \nu \in [0, 1],$$
+
+a data-processing-inequality ratio of two *informational* quantities ($I_{\text{pred}}$
+= how much the internal state knows about the future environment, $I_{\text{mem}}$ =
+how much it knows about the past), with nostalgia $\nu = 1 - \eta_v$. There is **no**
+energetic denominator: vitality is the conjunction
+
+$$V(X) \;:=\; S \;\wedge\; (\eta_v > 0),$$
+
+where $S \in \{0,1\}$ is the **self-payment predicate** (the system funds the
+holding of its own model *and* a physical error-return loop closes on it). Demarcation
+is carried by the rarity of a closed self-payment loop ($S = 1$), not by any smallness
+of an efficiency. The numeric value of $\eta_v$ is computed in full only for *E. coli*;
+for the other vital cases the grade is left to a future MI estimate.
 
 ## Index
 
-| Folder | Paper section | $\eta_L$ (central estimate) | What it demonstrates |
-|-------|----------------|-------------------------------|-------------------|
-| [`E-coli/`](./E-coli/) | § 3.5 | $3 \cdot 10^{-8}$ (ex.), $3 \cdot 10^{-5}$ (comp.) | **Positive case**: the bacterium passes both thresholds — the central worked example of the paper |
-| [`thermostat/`](./thermostat/) | § 4.4 | $5 \cdot 10^{-18}$ trivial / $0$ managing | **FEP boundary**: formal FEP-applicability without self-payment; the central anti-FEP argument |
-| [`city/`](./city/) | § 3.6 | $\sim 3 \cdot 10^{-30}$ (Singapore, Detroit) | **Socio-technical system**: structurally complex, yet $\eta_L$ is negligible; the $I_v$ formula (2)+(2a) is on synthetic data (without an empirical city ranking) |
-| [`biosphere/`](./biosphere/) | § 3.7 | $\sim 10^{-22}$ (annual window, coding-bound $I_{\text{pred}}$) | **Planetary system**: a single Gaia with an enormous Landauer budget from NPP |
-| [`LLM-as-corp/`](./LLM-as-corp/) | § 3.4 | $\sim 10^{-25}$ (corp boundary) | **Boundary extension**: "model + data centre + corporation" yields a positive but catastrophically small $\eta_L$ |
+| Folder | Section | Verdict | What it demonstrates |
+|--------|---------|---------|----------------------|
+| [`E-coli/`](./E-coli/) | § 3.5 | $S=1$, $\eta_v \sim O(0.1)$ **computed** | **Positive case**: $\eta_v = I_{\text{pred}}/I_{\text{mem}}$ computed exactly (Gaussian logdet); the central worked example |
+| [`thermostat/`](./thermostat/) | § 4.4 | $S=0$, $\eta_v$ undefined | **FEP boundary**: formal FEP-applicability without self-payment; the central anti-FEP argument |
+| [`city/`](./city/) | § 3.6 | $S=1$, $\eta_v>0$ (grade not asserted) | **Socio-technical system**: a closed self-payment loop; plus an $I_v$ structural-screening demo on synthetic data |
+| [`biosphere/`](./biosphere/) | § 3.7 | $S=1$, $\eta_v>0$ (grade not asserted) | **Planetary system**: one Gaia (or a family); a carrier-capacity ladder, explicitly *not* a value of $\eta_v$ |
+| [`LLM-as-corp/`](./LLM-as-corp/) | § 3.4 | $S=0$ on $B_1,B_2$; $S=1$ on $B_3,B_4$ | **Boundary extension**: where the loop closes, the self-paying subject is the firm, not the model |
 
 ## What is not covered by a separate computation
 
-The paradigm cases for which $\eta_L = 0$ structurally (through the numerator or the denominator) require no worked example:
+Cases that fail structurally need no worked example:
 
-- **The Sun** (§ 3.1): $\eta_L = 0$ through the numerator — there is no causally relevant environment.
-- **Hurricane and flame** (§ 3.2): $\eta_L = 0$ through the numerator — there is no $I_{\text{pred}}$.
-- **Crystal** (§ 3.3): $\eta_L = 0$ through the denominator — there is no $E_{\text{actual}}$ for a stationary structure.
-- **LLM (the narrow boundary "weights at the moment of inference")** (§ 3.4): $\eta_L^{\text{int}}$ is **undefined** through the simultaneous failure of $T_v^{\text{int}}$ and $C_v^{\text{int}}$.
-
-A full reproducible sweep over all six paradigm cases is future work (see paper § 3).
+- **The Sun, neutron star, black hole** (§ 3.1): $\eta_v = 0$ through the **numerator** — no causally relevant environment, so $I_{\text{mem}} = 0$ and $I_{\text{pred}} = 0$.
+- **Hurricane and flame** (§ 3.2): $\eta_v = 0$ through the **numerator** — dissipation without a held model (a stake without a model).
+- **Belousov–Zhabotinsky / autocatalysis** (§ 3.2): $S = 0$ — fed but not corrected; the error-return loop (condition ii) does not close.
+- **Crystal** (§ 3.3): $\eta_v = 0$ through the **numerator** — a stationary structure is homomorphic to its own lattice, not to a future environment signal ($I_{\text{mem}} \approx 0$).
+- **LLM, narrow boundary "weights at inference"** (§ 3.4): $S = 0$ — a strong predictive model with an open payment loop; the intra-class value of $\eta_v$ is not defined on that boundary.
 
 ## Running all computations
 
 ```bash
 for dir in E-coli thermostat city biosphere LLM-as-corp; do
     echo "=== $dir ==="
-    cd "$dir"
-    python eta_L_*.py
-    cd ..
+    (cd "$dir" && python eta_*.py)
 done
+# E-coli also ships a parameter-sensitivity script:
+(cd E-coli && python sensitivity.py)
 ```
 
-Each folder also contains an `expected_output.txt` for reproducibility verification.
+Each folder contains an `expected_output.txt` (LF line endings) for naive-diff
+reproducibility verification.
 
 ## Dependencies
 
-All computations use **only the Python standard library** (`math`, `statistics`). No pip install is required.
-
-Optional extensions (sensitivity dashboards, KSG estimation of mutual information, plotly visualizations) are planned for future work.
+All computations use **only the Python standard library** (`math`; no `numpy`,
+no `scipy`). No `pip install` is required. The *E. coli*
+example computes the Gaussian mutual informations exactly through a pure-stdlib
+Cholesky log-determinant, so the result is bit-for-bit reproducible.
 
 ## Structure of each folder
 
 ```
 <system>/
-├── README.md           — description (English, default): model, parameters, results, status
+├── README.md           — description (English, default): model, verdict, status
 ├── README.ru.md        — the same in Russian
-├── eta_L_<system>.py   — main computation
-├── sensitivity.py      — sensitivity analysis via Monte Carlo (where applicable)
+├── eta_<system>.py     — main computation / structural verdict
+├── sensitivity.py      — parameter sensitivity (E-coli only)
 └── expected_output.txt — captured output for verification
 ```
 
 ## Status
 
-The computations are a **methodological calibration**, demonstrating the reproducibility of the paradigm-case estimates. A detailed experimental design, KSG estimation of $I_{\text{pred}}$ from measurable time series, and a full sensitivity map of the sweep (§ 3.5, § 3.6) are future work.
+The *E. coli* package is an **illustrative worked example** (minimal linear model)
+showing that $\eta_v = I_{\text{pred}}/I_{\text{mem}}$ is finite, measurable, and
+$O(0.1)$ — not a calibrated value for the real organism. The other four packages
+print **structural verdicts** $(S, \eta_v)$ and the quantities that survive the
+refounding (e.g. the thermostat's $I_{\text{pred}} \le 3$ bits, the biosphere's
+carrier-capacity ceilings); numeric $\eta_v$ for those cases requires a separate
+MI estimate of $I_{\text{pred}}$ and $I_{\text{mem}}$ (future work).

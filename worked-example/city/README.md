@@ -1,54 +1,65 @@
-# Worked Example: η_L of a large city + I_v formula demonstration
+# Worked Example: structural verdict for a large city + I_v screening demo
 
-Companion to § 3.6 of the paper «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality». The script is self-contained (Python standard library only; no external, empirical, or unpublished dependency) and has two **clearly separated** parts.
+Companion to § 3.6 (Andriishin, *Theory in Biosciences*, in preparation), under
+the refounded central quantity $\eta_v = I_{\text{pred}}/I_{\text{mem}} \in [0,1]$.
+Self-contained (Python standard library only) with two clearly separated parts:
+a structural verdict, and an $I_v$ screening-index demonstration.
 
-## Part 1 — η_L (the paradigm claim of § 3.6)
+## Structural verdict (the § 3.6 claim)
 
-A city is a socio-technical system with a rich structural potential and yet a **negligible $\eta_L$** through the exergetic denominator of its total dissipation. $\eta_L$ is computed from first principles via formula (1):
+A city **passes both axes**:
 
-$$N_{\text{max}} = \frac{E_{\text{actual}}}{k_B T \ln 2}, \qquad \eta_L = \frac{I_{\text{pred}}}{N_{\text{max}}}.$$
+- $S = 1$ — it self-funds from its own municipal budget (condition i) and bears a
+  closed error-return loop: a distorted flow-model returns as a crisis to the city
+  itself (condition ii);
+- $\eta_v > 0$ — it holds predictive structure about its own flows.
 
-Singapore and Detroit are used **only** as order-of-magnitude-distinct energy budgets. No cohort and no $I_v$ are needed for this — every number reproduces from the inputs in this file.
+So the city is **vital**. The **grade** — the numeric value of
+$\eta_v = I_{\text{pred}}/I_{\text{mem}}$ among vital systems — is **not asserted**
+here: it requires an MI estimate of $I_{\text{pred}}$ and $I_{\text{mem}}$ of the
+administrative loop (resource flows → decisions), left to future work. The
+paradigm-case claim is the **closed self-payment loop**, not any smallness of an
+efficiency. The old energetic-denominator computation is removed.
 
-- $T = 285$ K; $k_B T \ln 2 \approx 2.73 \cdot 10^{-21}$ J/bit.
-- Singapore: $E_{\text{actual}} \sim 10^{19}$ J/year $\Rightarrow$ $N_{\text{max}} \approx 3.67 \cdot 10^{39}$ bits; with $I_{\text{pred}} \lesssim 10^{10}$ bits $\Rightarrow$ $\eta_L \approx 2.7 \cdot 10^{-30}$.
-- Detroit: $E_{\text{actual}} \sim 5 \cdot 10^{18}$ J/year $\Rightarrow$ $N_{\text{max}} \approx 1.83 \cdot 10^{39}$ bits; $\eta_L \approx 5.5 \cdot 10^{-30}$ (2× higher — smaller budget).
-- **Conservative upper bound** (direct energy consumption only, $\sim 10^{17}$ J/year $\approx$ 10 GW·year — the smallest $E_{\text{actual}}$, hence the largest, weakest ceiling): $N_{\text{max}} \approx 3.7 \cdot 10^{37}$ bits $\Rightarrow$ $\eta_L \lesssim 3 \cdot 10^{-28}$. Matches the conservative bound of main § 3.6.
+## I_v screening-index demonstration (formula 2b + 2a)
 
-$I_{\text{pred}} \lesssim 10^{10}$ bits is an upper bound from the capacity of the administrative-infrastructural carrier, **not a measured** predictive information (the operationalisation is open, as for the biosphere / LLM-corp). Via the computational denominator the estimate is closer to the biological range, but requires a separate operationalisation of the exergy of managerial computation (§ 3.6).
+$$I_v = \sqrt[3]{\tilde{T}_v \cdot \tilde{C}_v \cdot \tilde{S}_v} \in [0,1], \tag{2b}$$
 
-**Substantive paradigm claim:** the structural complexity of a city is high, while $\eta_L$ is negligible (~$3 \cdot 10^{-30}$ at the full energy budget; conservative upper bound $\lesssim 3 \cdot 10^{-28}$) — vitally negligible.
-
-## Part 2 — I_v composite, formula (2)+(2a): a method demonstration
-
-$$I_v = \sqrt[3]{\tilde{T}_v \cdot \tilde{C}_v \cdot \tilde{S}_v},$$
-
-where $\tilde{T}_v, \tilde{C}_v, \tilde{S}_v$ are the percentile-normalised (formula 2a) capacities within a cohort. This part runs on an **explicitly synthetic** set of archetype profiles. Its purpose is to show the mechanics of the composite index:
+where $\tilde{T}_v, \tilde{C}_v, \tilde{S}_v$ are the percentile-normalised
+(formula 2a) capacities within a cohort. Per main § 2.5, $I_v$ is a **structural
+screening** composite — it does **not** make the alive/not call (that is $\eta_v$'s
+job); it only screens structural readiness. The demo runs on an explicitly
+**synthetic** set of archetype profiles and shows two things:
 
 - (2a) percentile normalisation maps a raw proxy to a $[0,1]$ rank relative to the cohort;
-- (2) the geometric mean drags the composite toward **any** weak capacity (a profile with one failed axis gets a low $I_v$ even if the other two are high).
+- (2b) the cube-root (geometric) mean drags the composite toward **any** weak capacity (a profile with one failed axis gets a low $I_v$ even if the other two are high).
 
-This is **not** an empirical ranking of real cities. The raw numbers in `SYNTHETIC_COHORT` are illustrative placeholders, not measurements. The empirical calibration of $I_v$ for specific cities from open data (OECD FUA, CDP Cities, WIPO/OECD REGPAT, GDELT, OpenStreetMap) is separate work and is deliberately not asserted here.
+This is **not** an empirical ranking of real cities. The empirical calibration of
+$I_v$ for specific cities from open data (OECD FUA, CDP Cities, WIPO/OECD REGPAT,
+GDELT, OpenStreetMap) is separate work and is deliberately not asserted here.
 
 ## Contents
 
 | File | Purpose |
 |------|---------|
-| `eta_L_city.py` | Part 1 ($\eta_L$ of real cities) + Part 2 ($I_v$ formula demo on synthetic data) |
-| `expected_output.txt` | Reference output for reproducibility verification |
+| `eta_city.py` | Structural verdict ($S=1$, $\eta_v>0$) + $I_v$ screening-index demo on synthetic data |
+| `expected_output.txt` | Reference output (LF) for verification |
 
 ## Running
 
 ```bash
-python eta_L_city.py
+python eta_city.py
 ```
 
-The output should match `expected_output.txt` up to floating-point round-off.
+The output reproduces `expected_output.txt`.
 
 ## Status
 
-Part 1 ($\eta_L$) is the reproducible § 3.6 paradigm case: a city is structurally complex but vitally negligible; the computation is self-contained, with no cohort and no $I_v$. Part 2 demonstrates the $I_v$ composite formula on synthetic profiles; no empirical ranking of real cities by $I_v$ is asserted (that is separate work). No dependency beyond the standard library.
+The city's verdict is **structural** ($S = 1$, $\eta_v > 0$); no $\eta_v$ number is
+asserted. The $I_v$ demo exercises formula (2b)+(2a) on synthetic profiles to show
+the mechanics of the screening composite; no empirical $I_v$ ranking of real cities
+is claimed. Self-contained: standard library only.
 
 ## Literature
 
-- **Bettencourt, L. M. A.; Lobo, J.; Helbing, D.; Kühnert, C.; West, G. B.** Growth, innovation, scaling, and the pace of life in cities. *PNAS* **2007**, *104*, 7301–7306. (Bettencourt scaling of urban metrics — context for the separate empirical $I_v$ work.)
+- **Bettencourt, L. M. A.; Lobo, J.; Helbing, D.; Kühnert, C.; West, G. B.** Growth, innovation, scaling, and the pace of life in cities. *PNAS* **2007**, *104*, 7301–7306. (Scaling of urban metrics — context for the separate empirical $I_v$ work.)

@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use these materials, please cite the archived Zenodo deposit."
-title: "Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality"
-abstract: "Open-access materials accompanying the article «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality»: manuscript (Russian primary, English translation), supplementary material, bibliography, and self-contained reproducible Python worked examples for six paradigm cases."
+title: "Vitality as the Efficiency of Self-Paid Self-Modeling"
+abstract: "Open-access materials accompanying the article «Vitality as the Efficiency of Self-Paid Self-Modeling»: manuscript (Russian primary, English translation), supplementary material, bibliography, and self-contained reproducible Python worked examples for six paradigm cases."
 type: software
 authors:
   - family-names: Andriishin
@@ -9,22 +9,21 @@ authors:
     orcid: "https://orcid.org/0009-0000-4739-4017"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20262946
+    value: 10.5281/zenodo.21039160
     description: "Versioned Zenodo archive of this repository"
-doi: 10.5281/zenodo.20262946
+doi: 10.5281/zenodo.21039160
 url: "https://github.com/andriishin/landauer-self-modeling-oa"
 repository-code: "https://github.com/andriishin/landauer-self-modeling-oa"
 license:
   - CC-BY-4.0
   - MIT
-date-released: "2026-05-18"
-version: "1.0.0"
+date-released: "2026-07-01"
+version: "3.0.0"
 keywords:
-  - Landauer principle
-  - predictive information
-  - thermodynamics of computation
   - definition of life
   - vitality
-  - self-modeling
-  - free energy principle
+  - self-payment
+  - nostalgia
+  - predictive information
+  - thermodynamics of computation
   - astrobiology

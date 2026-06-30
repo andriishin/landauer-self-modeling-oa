@@ -1,52 +1,41 @@
 ========================================================================
-eta_L for Earth's biosphere — § 3.7 (annual window)
+Earth's biosphere (Gaia) -- structural verdict + capacity ladder
 ========================================================================
 
-Inputs:
-  T (surface)           =    288.0    K
-  NPP                   = 1.00e+14  W
-  tau (annual cycle)    = 3.156e+07  s
-  I_pred (biomass eq.)  = 1.00e+20  bits
-
-Derived:
-  k_B * T * ln 2        = 2.756e-21  J/bit
-  E_actual = NPP * tau  = 3.156e+21  J/year
-  N_max                 = 1.145e+42  bits/year
-
-Result:
-  eta_L (exergetic)     = 8.733e-23
-
-Sensitivity over alternative I_pred and tau choices:
+STRUCTURAL VERDICT (main 3.7)
 ------------------------------------------------------------------------
-    I_pred (bits)                    tau           eta_L
+  S = 1   biogeochemistry self-funds from its own flux (i) AND a
+          distorted regulation returns as species collapses to the
+          biosphere itself (ii).
+  eta_v > 0 the biosphere holds predictive structure about its env.
+  => VITAL (or a family of vital systems -- unity-of-model question
+     of main 3.7 stays open: one Gaia vs many overlapping subsystems).
+
+  Grade (value of eta_v): NOT asserted -- needs an MI estimate through
+  the biogeochemical sensory channel; future work. The paradigm-case
+  claim is the CLOSED self-payment loop and eta_v > 0, not a value.
+
+CARRIER-CAPACITY LADDER (ceilings on substrate, NOT eta_v)
 ------------------------------------------------------------------------
-     1e15 (atm. pools)           1 day        3.19e-25
-     1e15 (atm. pools)          1 year        8.73e-28
-     1e15 (atm. pools)    1 millennium        8.73e-31
-  1e19 (eco. memory low)           1 day        3.19e-21
-  1e19 (eco. memory low)          1 year        8.73e-24
-  1e19 (eco. memory low)    1 millennium        8.73e-27
-   1e20 (coding-bound)           1 day        3.19e-20
-   1e20 (coding-bound)          1 year        8.73e-23
-   1e20 (coding-bound)    1 millennium        8.73e-26
-  1e22 (eco. memory high)           1 day        3.19e-18
-  1e22 (eco. memory high)          1 year        8.73e-21
-  1e22 (eco. memory high)    1 millennium        8.73e-24
+  substrate ledger                    bits (~)  note
+  --------------------------------------------------------------------
+  atmospheric / regulatory pools         1e+15  small abiotic-pool ceiling
+  unique coding/regulatory genome        1e+19  10^12 sp x 5e6 bp x 2 bit/bp (main 3.7)
+  raw unique-genome (overcounts)         1e+24  over-counts non-coding bases (no predictive MI)
+  full copy-number DNA                   1e+37  Landenmark et al. 2015; ~17 orders larger, irrelevant
 
-Cross-check vs paper § 3.7 (annual window, coding-bound I_pred):
-  eta_L (exergetic) ~ 1e-22                               OK
+  consistency: 10^12 x 5e6 x 2 = 1e+19 bits (unique coding-bound capacity).
+  None of these is a value of eta_v. eta_v = I_pred / I_mem requires a
+  measured predictive MI, which the substrate ceiling does NOT give:
+  the copy-number ledger (~1e37) is ~17 orders above the unique-genome
+  ceiling and carries no extra predictive MI about the environment.
 
-Computational-denominator branch (E_comp = f * NPP * tau):
-------------------------------------------------------------------------
-     f = E_comp/E_actual     N_max^comp (bits/year)     eta_L^comp
-------------------------------------------------------------------------
-                 1.0e-03                  1.145e+39      8.733e-20
-                 3.0e-03                  3.435e+39      2.911e-20
-                 1.0e-02                  1.145e+40      8.733e-21
+Cross-check vs main 3.7:
+  biosphere verdict: S = 1, eta_v > 0 (VITAL); grade not asserted  OK
+  ~1e19 unique-genome / ~1e37 copy-number shown as CAPACITY only  OK
+  (no eta_v value derived from any of these ceilings)               OK
 
-Cross-check vs paper § 3.7 (computational, central f = 1e-3):
-  eta_L^comp <~ 1e-19                                     OK
-
-Status: methodological calibration. Single-compressor reading; the
-alternative reading (biosphere as overlapping family of subsystems)
-is discussed in § 3.7 and remains an open empirical question.
+Status: the verdict is structural (S = 1, eta_v > 0); no eta_v number is
+asserted. The genomic figures are carrier-capacity ceilings, not
+predictive information. Refining I_pred / I_mem through biogeochemical
+proxies is separate work. Self-contained: standard library only.

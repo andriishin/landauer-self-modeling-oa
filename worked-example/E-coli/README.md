@@ -1,71 +1,122 @@
-# Worked Example: η_L for the *E. coli* chemotaxis loop
+# Worked Example: η_v = I_pred / I_mem for the *E. coli* chemotaxis loop
 
-A reproducible computation of the Landauer efficiency of self-modeling $\eta_L$ for the bacterial chemotaxis loop of *E. coli*. Companion to the paper "Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality" (§ 3.5 + Supplementary § S3.5).
+The central worked example of the paper: an exact computation of the predictive
+fraction
+
+$$\eta_v = \frac{I_{\text{pred}}}{I_{\text{mem}}} = 1 - \nu \in [0, 1]$$
+
+for the bacterial chemotaxis loop of *E. coli*. Companion to § 3.5 + Supplementary
+§ S3.5 (Andriishin, *Theory in Biosciences*, in preparation). Both numerator and
+denominator are **informational** quantities; there is no energetic denominator.
+The bacterium is the one paradigm case where $\eta_v$ is computed in full
+($S = 1$, $\eta_v \sim O(0.1)$).
 
 ## Contents
 
 | File | Purpose |
 |------|---------|
-| `eta_L_ecoli.py` | Central computation: $\eta_L$ and $\eta_L^{\text{comp}}$ through the exergetic and computational denominators; prints a results table |
-| `sensitivity.py` | Sensitivity analysis via Monte Carlo: the spread of $\eta_L$ over the ranges of $I_{\text{pred}}, E_{\text{actual}}, \eta_{\text{ex}}, T$ |
-| `expected_output.txt` | Reference output of `eta_L_ecoli.py` for reproducibility verification |
+| `eta_ecoli.py` | Central computation: exact Gaussian $I_{\text{mem}}, I_{\text{pred}}, \eta_v, \nu$ via a pure-stdlib Cholesky log-determinant; prints the $(\tau_E,\beta_v)$ table, the nostalgia $\beta_v$-scan, and a measurability example |
+| `sensitivity.py` | Parameter sensitivity: how $\eta_v$ responds to drift $\tau_E$, past-window $L$, and methylation noise $r$ |
+| `expected_output.txt` | Reference output of `eta_ecoli.py` (LF) for reproducibility verification |
+| `expected_output_sensitivity.txt` | Reference output of `sensitivity.py` (LF) |
 
-Uses only the Python standard library (`math`, `statistics`); no external dependencies.
+Uses only the Python standard library (`math`); no `numpy`, no external dependency.
 
 ## Running
 
 ```bash
-python eta_L_ecoli.py
+python eta_ecoli.py
 python sensitivity.py
 ```
 
-The output of `eta_L_ecoli.py` should match `expected_output.txt` up to floating-point round-off. Numerical anchors:
+The output of `eta_ecoli.py` reproduces `expected_output.txt` bit-for-bit (and
+`sensitivity.py` reproduces `expected_output_sensitivity.txt`).
+Numerical anchors (in nats; matching Supplementary § S3.5):
 
-- $N_{\text{max}}^{\text{ex}} \approx 3 \cdot 10^{11}$ bits per cell (exergetic budget);
-- $N_{\text{max}}^{\text{comp}} \approx 3 \cdot 10^{8}$ bits per cell (computational, $\eta_{\text{ex}}^{\text{comp}} = 10^{-3}$);
-- $\eta_L \approx 3 \cdot 10^{-8}$ through the exergetic denominator;
-- $\eta_L^{\text{comp}} \approx 3 \cdot 10^{-5}$ through the computational denominator.
+- $I_{\text{mem}}$ is **finite** (0.03–0.72 over the sweep) and $\eta_v \in [0,1]$ by the data-processing inequality;
+- characteristic $\eta_v \sim O(0.1)$ (e.g. $\tau_E=10, \beta_v=0.9$: $I_{\text{mem}}=0.50$, $I_{\text{pred}}=0.14$, $\eta_v=0.27$);
+- nostalgia $\beta_v$-scan at $\tau_E = 5$: $\eta_v \approx 0.29 \to 0.035$ as $\beta_v = 0.3 \to 0.99$.
 
-## Model
+## Model (Supplementary § S3.5)
 
-The computation follows the protocol of Supplementary § S2.1 (the four elements of the operationalisation of $I_{\text{pred}}$).
+Chemotaxis is modelled as a **linear adaptive tracker** in the passive
+(immobilised) FRET protocol of Sourjik–Berg / Cluzel — the cell is fixed and the
+ligand is driven externally. Per main § 2.1 the immobilisation is **not a
+simplification but an operational realisation of Pearl's $\mathrm{do}(a)$
+intervention**: exogenously clamping the cell's action severs the
+action→environment feedback and restores the Markovianity that the $[0,1]$ bound
+presupposes. The passive quantity the protocol measures is therefore the
+**interventional** predictive freshness
+$$\eta_v^{\mathrm{do}} = \frac{I\!\left(M_t;\, X_E^{(t,t+\tau]} \,\middle|\, \mathrm{do}(a)\right)}{I_{\text{mem}}} \in [0,1],$$
+with numerator and denominator in the *same* $\mathrm{do}(a)$ regime (a freely
+swimming cell would measure a different, active quantity not bounded by 1). Three
+elements:
 
-**(a) Sensory channel $x_t$** — the concentration of the ligand (attractant or repellent) at the cell's chemotaxis receptors. The estimate uses a range of orders of magnitude from [Sourjik2002, Endres2008].
+**(a) Sensory channel** — the ligand log-concentration $s_t$ as an AR(1) process
+with correlation time $\tau_E$ (environment drift), driven by microfluidics.
 
-**(b) Internal channel $s_t$** — the methylation level of the receptor clusters (Tar, Tsr, Trg, Tap, Aer). The methylation states act as a short-term adaptation memory with a characteristic time of seconds to minutes [Korobkova2004].
+**(b) Internal channel (memory)** — the methylation level
+$m_t = \sum_{j \ge 1} w_j\, s_{t-j} + \text{noise}$, a leaky integral of the past
+ligand (linearised Tu-type adaptation) with weights $w_j = (1-\beta_v)\beta_v^{j-1}$,
+where $\beta_v$ is the adaptation memory. The internal state is $M_t = m_t$, read
+via FRET (Sourjik–Berg 2002; Cluzel et al. 2000).
 
-**(c) Past/future windows with $\tau$** — a characteristic memory window $\tau \approx 10$–$100$ s (the characteristic methylation/demethylation time) $\times$ a generation window of $\sim 30$–$60$ min.
+**(c) Windows** — a past window $X_E^{\le t}$ of length $L$ and a future horizon
+$X_E^{(t,t+\tau]}$.
 
-**(d) Mutual-information estimate $I_{\text{pred}}$** — the literature estimates converge on $I_{\text{pred}} \in [10^{3}, 10^{4}]$ bits per cell per generation, with a central estimate of $10^{4}$ bits [ShimizuTuBerg2010, Cheong2011, MehtaSchwab2012]. In the sensitivity analysis it is varied over the full range.
+Since $(s_t, m_t)$ are jointly Gaussian,
 
-## Denominator
+$$I_{\text{mem}} = I(M_t; X_E^{\le t}), \qquad I_{\text{pred}} = I(M_t; X_E^{(t,t+\tau]})$$
 
-$N_{\text{max}}$ is defined through equation (1) of the main text:
+are computed **exactly** through log-determinants of covariance matrices (here a
+pure-stdlib Cholesky factorisation replacing `numpy.linalg.slogdet`). By the
+data-processing inequality $I_{\text{pred}} \le I_{\text{mem}}$, hence
+$\eta_v \in [0,1]$ by construction, and $\nu = 1 - \eta_v$. The $\eta_v$ computed
+below is thus $\eta_v^{\mathrm{do}}$ — the passive, $\mathrm{do}(a)$-conditioned
+freshness — not the unconstrained active value.
 
-$$N_{\text{max}} = \frac{E_{\text{actual}}}{k_B T \ln 2}$$
+## Measurability
 
-where
+The key point is that $I_{\text{mem}}$ depends **only** on the observable
+covariances $\text{Cov}(m, s_k)$ and $\text{Cov}(s_i, s_j)$ — both estimable from
+time series ($m$ via FRET methylation, $s$ via microfluidics). The operational
+debt of the informational denominator is therefore **no worse** than that of a
+calorimetric dissipation estimate (the direct answer to the worry that an
+informational quantity is harder to measure than calorimetry).
 
-- $E_{\text{actual}} = E_{\text{actual}}^{\text{total}} \cdot \eta_{\text{ex}}$ — the exergetic fraction of the total free energy that physically pays for holding $I_{\text{pred}}$;
-- $E_{\text{actual}}^{\text{total}} \sim 10^{-9}$ J/cell per generation (the metabolic budget, an ATP equivalent on the order of $10^{10}$ molecules);
-- $\eta_{\text{ex}} \approx 1$ for the exergetic denominator (all available free energy);
-- $T = 310$ K (physiological temperature);
-- $k_B T \ln 2 = 2.967 \cdot 10^{-21}$ J/bit at $T = 310$ K.
+## Nostalgia
 
-The computational denominator uses $\eta_{\text{ex}}^{\text{comp}} \approx 10^{-3}$ — the fraction of exergy that goes to logically irreversible information operations; the rest is spent on biomass synthesis and ion gradients [MehtaSchwab2012, Lan2012].
+Nostalgia $\nu = 1 - \eta_v$ grows ($\eta_v$ falls) when the adaptation memory $\beta_v$
+**outpaces** the environment drift $\tau_E$: the cell over-integrates stale
+ligand, so the pure-ballast fraction rises. This gives nostalgia a concrete
+falsifiable reading — faster drift or slower adaptation → more ballast → lower
+predictive fraction. The receptor/cluster count does **not** affect $\eta_v$
+directly: scaling the number of independent sensory channels raises numerator and
+denominator together and cancels in the ratio.
+
+## Epistemic status of the number
+
+$\eta_v \sim O(0.1)$ is an **illustration of the form**, not a quantitative claim
+about real *E. coli*: it comes from a minimal linear model whose purpose is to
+show measurability and order of magnitude. The exact experimental mapping (which
+FRET readout to identify with $M_t$; the window for $X_E^{\le t}$; truncation of
+the cumulant to a finite $\tau_{\text{mem}}$) requires cross-checking against the
+primary sources and is left to future work.
 
 ## References
 
 - **Berg, H. C.; Brown, D. A.** Chemotaxis in *Escherichia coli* analysed by three-dimensional tracking. *Nature* **1972**, *239*, 500–504.
-- **Sourjik, V.; Berg, H. C.** Receptor sensitivity in bacterial signalling. *PNAS* **2002**, *99*, 123–127.
-- **Korobkova, E.; Emonet, T.; Vergassola, M.; Cluzel, P.** From molecular noise to behavioural variability in a single bacterium. *Nature* **2004**, *428*, 574–578.
-- **Endres, R. G.; Wingreen, N. S.** Accuracy of direct gradient sensing by single cells. *PNAS* **2008**, *105*, 15749–15754.
-- **Shimizu, T. S.; Tu, Y.; Berg, H. C.** A modular gradient-sensing network for chemotaxis in *Escherichia coli* revealed by responses to time-varying stimuli. *Mol. Syst. Biol.* **2010**, *6*, 382.
-- **Cheong, R.; Rhee, A.; Wang, C. J.; Nemenman, I.; Levchenko, A.** Information transduction capacity of noisy biochemical signalling networks. *Science* **2011**, *334*, 354–358.
-- **Lan, G.; Sartori, P.; Neumann, S.; Sourjik, V.; Tu, Y.** The energy–speed–accuracy trade-off in sensory adaptation. *Nat. Phys.* **2012**, *8*, 422–428.
+- **Sourjik, V.; Berg, H. C.** Receptor sensitivity in bacterial signalling (FRET readout of methylation). *PNAS* **2002**, *99*, 123–127.
+- **Cluzel, P.; Surette, M.; Leibler, S.** An ultrasensitive bacterial motor revealed by monitoring signaling proteins in single cells. *Science* **2000**, *287*, 1652–1655.
+- **Tu, Y.; Shimizu, T. S.; Berg, H. C.** Modeling the chemotactic response of *E. coli* to time-varying stimuli. *PNAS* **2008**, *105*, 14855–14860. (Tu-type adaptation linearised into the leaky integrator.)
+- **Shimizu, T. S.; Tu, Y.; Berg, H. C.** A modular gradient-sensing network for chemotaxis in *E. coli* revealed by responses to time-varying stimuli. *Mol. Syst. Biol.* **2010**, *6*, 382.
 - **Mehta, P.; Schwab, D. J.** Energetic costs of cellular computation. *PNAS* **2012**, *109*, 17978–17982.
-- **Landauer, R.** Irreversibility and heat generation in the computing process. *IBM J. Res. Dev.* **1961**, *5*, 183–191.
 
 ## Status
 
-The computation has the character of a *methodological calibration*: it does not claim accuracy better than one order of magnitude per parameter and three orders of magnitude in the resulting $\eta_L$. The substantive claim is the robustness of the difference $\eta_L \ll 1$ and the qualitative relation $\eta_L^{\text{comp}} / \eta_L \sim 10^{3}$, which reflects the fraction of free energy directed to logically irreversible information operations. The full sensitivity map is in `sensitivity.py`.
+A **methodological calibration / proof-of-measurability**: it does not claim a
+calibrated $\eta_v$ for real *E. coli*, but shows that the predictive fraction
+$\eta_v = I_{\text{pred}}/I_{\text{mem}}$ is finite, measurable from observable
+correlations, and $O(0.1)$ for chemotactic memory. The bottleneck is the
+experimental FRET-readout ↔ $M_t$ mapping and the past-window choice, not the
+receptor count. Parameter sensitivity is in `sensitivity.py`.
