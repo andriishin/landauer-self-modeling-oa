@@ -1,34 +1,38 @@
 ==============================================================================
-eta_L for LLM-as-corporation — § 3.4 extended boundary
+LLM-as-corporation -- structural verdict (main 3.4 / Supp S3.4)
 ==============================================================================
 
-Energy budget (annual, frontier-AI lab order-of-magnitude):
-  data center                 3.15e+15 J/year
-  office & operations         3.15e+14 J/year
-  supply chain (amortized)    3.15e+16 J/year
-  total E_actual              3.50e+16 J/year
+Refounded quantity: eta_v = I_pred / I_mem in [0, 1]. The model is
+predictively strong (large I_pred) but its payment loop is open;
+demarcation is carried by S, not by any energetic-efficiency ratio.
 
-Predictive information:
-  training corpus in weights  1.00e+12 bits
-  operational memory          1.00e+11 bits
-  market intelligence         1.00e+10 bits
-  total I_pred                1.11e+12 bits
+Counterfactual ablation over nested boundaries B1 < B2 < B3 < B4:
+  B  components                                    window        S  self-paying subject
+  ----------------------------------------------------------------------------------------
+  B1 weights only                                  static        0  none (degenerate)
+  B2 weights + KV-cache + executing server         session       0  none (grid pays)
+  B3 B2 + training pipeline (data + GPU park + RLHF)model gen.    1  pipeline (not model)
+  B4 B3 + corporation (legal entity)               generations   1  firm (not model)
 
-Derived:
-  T (office)                  300.0 K
-  k_B * T * ln 2              2.871e-21 J/bit
-  N_max  (exergetic)          1.218e+37 bits
+Per-boundary reasoning:
+  B1 (S = 0): counterfactual-degenerate: static object with the server off
+  B2 (S = 0): grid pays holding/updating; no physical error-return channel to weights
+  B3 (S = 1): own GPU dissipation appears; error-return loop closes on the operators
+  B4 (S = 1): self-funding loop fully closed -- but the subject is the firm
 
-Result:
-  eta_L^corp  (exergetic)     9.114e-26
+Verdict: the LLM MODEL is never vital. At B1, B2 the self-payment
+predicate fails (S = 0): the grid pays for holding/updating the model
+and there is no physical channel returning the model's error to its
+carrier. At B3, B4 the loop closes (S = 1), but the self-paying
+subject is no longer the model -- it is the pipeline, then the firm.
+Extending the boundary re-addresses the subject; it does not confer
+vitality on the model.
 
-Reading.
-  Through the exergetic denominator, eta_L^corp is positive but
-  vanishingly small. The corporation has a much larger absolute predictive
-  structure than a bacterial cell, but its energy budget scales
-  much faster than its information-relevant operations: most of
-  the joules go to logistics, manufacturing, HVAC, and cooling
-  overhead, not to bit-flipping in support of self-model maintenance.
+eta_v value: NOT defined here for any boundary. A number would require
+an MI estimate of I_pred and I_mem of the respective loop -- future
+work; no eta^corp figure is asserted.
 
-Cross-check vs paper § 3.4:
-  eta_L^corp ~ 10^-25 (exergetic)                          OK
+Cross-check vs main 3.4 / Supplementary S3.4:
+  S = 0 on B1, B2 (weights / session, grid external)   OK
+  S = 1 on B3, B4 (subject = pipeline / firm, not model) OK
+  no eta^corp number asserted (needs MI estimate)        OK

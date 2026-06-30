@@ -1,40 +1,41 @@
 ========================================================================
-eta_L for a bimetallic room thermostat — § 4.4 boundary case
+Thermostat (bimetallic) -- structural verdict (main 4.4 / Supp S4.4)
 ========================================================================
 
-Counterfactual ablation of the boundary (§ 2.2):
-  inside  — bimetal strip, relay contacts
-            internal dissipation P_int = 1.00e-06 W
-  outside — heater, electric grid, external setpoint operator
-            external power     P_ext = 1.00e+03 W
+Refounded quantity: eta_v = I_pred / I_mem in [0, 1]. Demarcation is
+carried by the self-payment predicate S, not by an energetic-
+efficiency ratio. For the thermostat S = 0, so eta_v is not defined.
 
-Inputs:
-  T (room thermostat)   =    300.0    K
-  Delta T_room          =     10.0    K
-  Delta T_hyst          =      1.0    K
-  P_internal            = 1.00e-06  W
-  tau_d                 =   1800.0    s
+Counterfactual ablation of the boundary (main 2.2):
+  candidate                   inside?  why
+  --------------------------------------------------------------
+  bimetallic strip            yes      removing it breaks the loop
+  relay contacts              yes      removing it breaks the loop
+  heating element             no       removes heat source, not decision loop
+  electric grid               no       external energy source
+  external setpoint operator  no       does not disrupt regulation
+  -> boundary = {bimetal, relay}
 
-Derived:
-  k_B * T * ln 2        = 2.871e-21  J / bit
-  E_actual (internal)   = 1.800e-03  J over tau
-  N_max                 = 6.270e+17  bits
-  I_pred upper bound    =    3.322    bits
+Surviving quantities (outlive the refounding; match main 4.4):
+  internal dissipation   P_int  ~ 1e-06 W  (elastic relaxation + relay)
+  predictive-info bound  I_pred <= log2(Delta T_room / Delta T_hyst):
+    diurnal  Delta T_room ~ 10 K, hyst 1 K -> I_pred <= 3.32 bits (~3)
+    seasonal Delta T_room ~ 30 K, hyst 1 K -> I_pred <= 4.91 bits (up to ~5)
+  (external heater power P_ext ~ 1e+03 W -- outside)
 
-Two readings of eta_L:
-  eta_L  (trivial: maintain own shape)   = 5.298e-18
-  eta_L  (managing: regulate room)        = 0.000e+00
+Two self-consistent readings, both S = 0 via DIFFERENT failures:
+  managing ('regulate the room'): condition (i) fails -- room heating
+    is paid by the external grid, E_own about that task = 0 (T_v fails).
+  trivial ('hold the bimetal's own shape'): condition (ii) fails --
+    passive thermo-mechanical coupling forms no error-return loop; a
+    shape deviation is not corrected by the system's own dissipation
+    (S_v fails).
 
-Reading.
-  The trivial reading gives a positive but vanishing eta_L because
-  the bimetal does hold a few bits about its own form against its
-  own (tiny) dissipation budget. The managing reading is exactly
-  zero: the predictive information about room temperature is paid
-  by the external grid (heater + supply), not by the bimetal's
-  internal dissipation. This is the central anti-FEP point of § 4.4:
-  formal FEP-applicability does not imply self-payment.
+Verdict: S = 0 (not vital). eta_v = I_pred / I_mem is UNDEFINED -- a
+numeric value would require an MI estimate of I_pred and I_mem of a
+self-paying loop, which the thermostat does not possess.
 
-Cross-check vs paper § 4.4:
-  I_pred ≈ log2(Delta T_room / Delta T_hyst) ≈ 3 bits at diurnal Delta T_room ~ 10 K
-                                              (up to ~5 bits at seasonal Delta T_room ~ 30 K)   OK
-  P_internal ~ 1e-6 W                                        OK
+Cross-check vs main 4.4 / Supplementary S4.4:
+  S = 0 in both readings                          OK
+  I_pred <= ~3 bits diurnal (up to ~5 seasonal)   OK (3.32 / 4.91)
+  P_int ~ 1e-6 W                                  OK

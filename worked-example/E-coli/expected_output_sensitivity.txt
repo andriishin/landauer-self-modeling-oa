@@ -1,0 +1,54 @@
+========================================================================
+Sensitivity analysis -- eta_v = I_pred/I_mem for E. coli chemotaxis
+========================================================================
+
+(1) Environment-drift time tau_E (beta_v = 0.9, tau = 5, L = 60, r = 0.3)
+    Faster drift (small tau_E) -> the future is less predictable from
+    the methylation memory -> lower eta_v, higher nostalgia. Slower drift
+    -> higher eta_v. This is the nostalgia axis of main § 3.5.
+     tau_E    I_mem   I_pred   eta_v      nu
+    ---------------------------------------
+         3   0.2974   0.0196   0.066   0.934
+         5   0.3846   0.0528   0.137   0.863
+        10   0.4993   0.1364   0.273   0.727
+        20   0.5913   0.2587   0.438   0.562
+        30   0.6312   0.3388   0.537   0.463
+
+(2) Past-window length L (tau_E = 10, beta_v = 0.9, tau = 5, r = 0.3)
+    For L >~ a few tau_E, I_mem is essentially unchanged: the distant
+    past is exponentially suppressed by both w_j and the ligand
+    autocorrelation. This justifies truncating the cumulant to a
+    finite window.
+        L    I_mem   I_pred   eta_v
+    ------------------------------
+       10   0.4345   0.1364   0.314
+       20   0.4910   0.1364   0.278
+       40   0.4992   0.1364   0.273
+       60   0.4993   0.1364   0.273
+      100   0.4993   0.1364   0.273
+
+(3) Methylation-readout noise r (tau_E = 10, beta_v = 0.9, tau = 5, L = 60)
+    r sets the absolute level of I_mem (more noise -> less I_mem), but
+    weakly affects the RATIO eta_v: it enters numerator and denominator
+    consistently.
+         r    I_mem   I_pred   eta_v
+    -------------------------------
+       0.1   0.9077   0.1903   0.210
+       0.3   0.4993   0.1364   0.273
+       1.0   0.2075   0.0687   0.331
+       3.0   0.0791   0.0285   0.360
+
+Notes (Supplementary S3.5):
+  - Receptor/cluster count does NOT affect eta_v directly: scaling the
+    number of independent sensory channels raises numerator and
+    denominator together and cancels in the ratio.
+  - Prediction horizon tau: in this minimal AR(1) model the ligand is
+    Markov, so I_pred is fixed by the one-step-ahead correlation and is
+    insensitive to tau >= 1; resolving the horizon dependence discussed
+    in S3.5 needs a non-Markov environment model (future work).
+  - The bottleneck is the experimental FRET-readout <-> M_t mapping and
+    the past-window choice for X_E^{<=t}, not the receptor count.
+
+Conclusion: eta_v = I_pred/I_mem is robust at O(0.1) across the
+plausible (tau_E, L, r) ranges; nostalgia nu = 1 - eta_v carries the
+complement. Consistent with main S3.5 and Supplementary S3.5.

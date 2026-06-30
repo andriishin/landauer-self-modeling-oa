@@ -1,8 +1,11 @@
 """
-Sensitivity analysis for eta_L of E. coli chemotaxis loop.
+Sensitivity analysis for eta_v = I_pred / I_mem of the E. coli chemotaxis loop.
 
-Sweeps four parameters over their plausible literature ranges and reports
-the resulting distribution of eta_L (both exergetic and computational).
+Sweeps the model parameters of Supplementary § S3.5 -- environment-drift time
+tau_E, past-window length L, and methylation-readout noise r -- and shows that
+the predictive fraction eta_v = I_pred/I_mem stays within about one order of
+magnitude around O(0.1), while I_mem and I_pred vary. There is no energetic-
+budget sweep here: both numerator and denominator are informational.
 
 Run:
     python sensitivity.py
@@ -10,129 +13,72 @@ Run:
 
 from __future__ import annotations
 
-import math
-import statistics
-
-from eta_L_ecoli import (
-    K_BOLTZMANN,
-    LN2,
-    eta_L,
-    landauer_cost_per_bit,
-    n_max,
-)
+from eta_ecoli import run
 
 
-# ---------------------------------------------------------------------------
-# Parameter ranges (literature plausibility intervals)
-# ---------------------------------------------------------------------------
-
-# Predictive information: 10^2 to 10^4 bits per cell per generation.
-# Lower bound: minimal chemotactic memory ~10^2 bits (basic adaptation lowered
-# by cooperative-coupling correction of ~1 order vs single-cluster estimate);
-# upper bound: ~10^4 bits, the central estimate from Cheong et al. 2011.
-I_PRED_RANGE = (1.0e2, 1.0e4)
-
-# Total exergetic budget per cell per generation:
-# 10^-10 (slow growth, minimal medium) to 10^-8 (rapid growth, rich medium).
-E_ACTUAL_RANGE = (1.0e-10, 1.0e-8)
-
-# Exergetic efficiency for computational denominator:
-# 10^-4 to 10^-2 (fraction of dissipation on irreversible information ops).
-ETA_EX_COMP_RANGE = (1.0e-4, 1.0e-2)
-
-# Temperature: 25-42 °C (lab/physiological extremes for E. coli growth).
-T_RANGE = (273.15 + 25.0, 273.15 + 42.0)
-
-# Number of grid points per parameter (full grid for reproducibility,
-# replace with random sampling for higher-dimensional sweeps).
-N_GRID = 7
+def report_drift() -> None:
+    print("(1) Environment-drift time tau_E (beta_v = 0.9, tau = 5, L = 60, r = 0.3)")
+    print("    Faster drift (small tau_E) -> the future is less predictable from")
+    print("    the methylation memory -> lower eta_v, higher nostalgia. Slower drift")
+    print("    -> higher eta_v. This is the nostalgia axis of main § 3.5.")
+    print(f"    {'tau_E':>6} {'I_mem':>8} {'I_pred':>8} {'eta_v':>7} {'nu':>7}")
+    print("    " + "-" * 39)
+    for tau_E in (3, 5, 10, 20, 30):
+        d = run(tau_E, 0.9)
+        print(f"    {tau_E:>6} {d['i_mem']:>8.4f} {d['i_pred']:>8.4f}"
+              f" {d['eta_v']:>7.3f} {d['nu']:>7.3f}")
+    print()
 
 
-# ---------------------------------------------------------------------------
-# Sweep
-# ---------------------------------------------------------------------------
+def report_window() -> None:
+    print("(2) Past-window length L (tau_E = 10, beta_v = 0.9, tau = 5, r = 0.3)")
+    print("    For L >~ a few tau_E, I_mem is essentially unchanged: the distant")
+    print("    past is exponentially suppressed by both w_j and the ligand")
+    print("    autocorrelation. This justifies truncating the cumulant to a")
+    print("    finite window.")
+    print(f"    {'L':>5} {'I_mem':>8} {'I_pred':>8} {'eta_v':>7}")
+    print("    " + "-" * 30)
+    for big_l in (10, 20, 40, 60, 100):
+        d = run(10, 0.9, big_l=big_l)
+        print(f"    {big_l:>5} {d['i_mem']:>8.4f} {d['i_pred']:>8.4f} {d['eta_v']:>7.3f}")
+    print()
 
 
-def log_grid(low: float, high: float, n: int) -> list[float]:
-    """Logarithmically spaced grid from low to high (inclusive)."""
-    if n == 1:
-        return [math.sqrt(low * high)]
-    log_low, log_high = math.log10(low), math.log10(high)
-    step = (log_high - log_low) / (n - 1)
-    return [10.0 ** (log_low + i * step) for i in range(n)]
-
-
-def linear_grid(low: float, high: float, n: int) -> list[float]:
-    if n == 1:
-        return [(low + high) / 2.0]
-    step = (high - low) / (n - 1)
-    return [low + i * step for i in range(n)]
-
-
-def sweep_exergetic() -> list[float]:
-    results: list[float] = []
-    for i_pred in log_grid(*I_PRED_RANGE, N_GRID):
-        for e_actual in log_grid(*E_ACTUAL_RANGE, N_GRID):
-            for temperature in linear_grid(*T_RANGE, N_GRID):
-                nmax = n_max(e_actual, eta_ex=1.0, temperature=temperature)
-                results.append(eta_L(i_pred, nmax))
-    return results
-
-
-def sweep_computational() -> list[float]:
-    results: list[float] = []
-    for i_pred in log_grid(*I_PRED_RANGE, N_GRID):
-        for e_actual in log_grid(*E_ACTUAL_RANGE, N_GRID):
-            for eta_ex_comp in log_grid(*ETA_EX_COMP_RANGE, N_GRID):
-                for temperature in linear_grid(*T_RANGE, N_GRID):
-                    nmax = n_max(e_actual, eta_ex_comp, temperature)
-                    results.append(eta_L(i_pred, nmax))
-    return results
-
-
-# ---------------------------------------------------------------------------
-# Reporting
-# ---------------------------------------------------------------------------
-
-
-def report(label: str, results: list[float]) -> None:
-    log_results = [math.log10(x) for x in results if x > 0]
-    log_min, log_max = min(log_results), max(log_results)
-    log_med = statistics.median(log_results)
-    log_geom_mean = statistics.mean(log_results)
-    spread_orders = log_max - log_min
-
-    print(f"--- {label} ---")
-    print(f"  N samples           = {len(results):d}")
-    print(f"  min                 = 10^{log_min:>+6.2f}  = {10 ** log_min:.2e}")
-    print(f"  geometric median    = 10^{log_med:>+6.2f}  = {10 ** log_med:.2e}")
-    print(f"  geometric mean      = 10^{log_geom_mean:>+6.2f}  = {10 ** log_geom_mean:.2e}")
-    print(f"  max                 = 10^{log_max:>+6.2f}  = {10 ** log_max:.2e}")
-    print(f"  spread              = {spread_orders:>5.2f} orders of magnitude")
+def report_noise() -> None:
+    print("(3) Methylation-readout noise r (tau_E = 10, beta_v = 0.9, tau = 5, L = 60)")
+    print("    r sets the absolute level of I_mem (more noise -> less I_mem), but")
+    print("    weakly affects the RATIO eta_v: it enters numerator and denominator")
+    print("    consistently.")
+    print(f"    {'r':>6} {'I_mem':>8} {'I_pred':>8} {'eta_v':>7}")
+    print("    " + "-" * 31)
+    for r in (0.1, 0.3, 1.0, 3.0):
+        d = run(10, 0.9, r=r)
+        print(f"    {r:>6} {d['i_mem']:>8.4f} {d['i_pred']:>8.4f} {d['eta_v']:>7.3f}")
     print()
 
 
 def main() -> None:
     print("=" * 72)
-    print("Sensitivity analysis — eta_L for E. coli chemotaxis loop")
+    print("Sensitivity analysis -- eta_v = I_pred/I_mem for E. coli chemotaxis")
     print("=" * 72)
     print()
-    print(f"Parameter ranges (log-uniform sweep, {N_GRID} grid points each):")
-    print(f"  I_pred         : {I_PRED_RANGE[0]:.1e} ... {I_PRED_RANGE[1]:.1e} bits")
-    print(f"  E_actual^total : {E_ACTUAL_RANGE[0]:.1e} ... {E_ACTUAL_RANGE[1]:.1e} J")
-    print(f"  eta_ex (comp.) : {ETA_EX_COMP_RANGE[0]:.1e} ... {ETA_EX_COMP_RANGE[1]:.1e}")
-    print(f"  T              : {T_RANGE[0]:.1f} ... {T_RANGE[1]:.1f} K")
+    report_drift()
+    report_window()
+    report_noise()
+    print("Notes (Supplementary S3.5):")
+    print("  - Receptor/cluster count does NOT affect eta_v directly: scaling the")
+    print("    number of independent sensory channels raises numerator and")
+    print("    denominator together and cancels in the ratio.")
+    print("  - Prediction horizon tau: in this minimal AR(1) model the ligand is")
+    print("    Markov, so I_pred is fixed by the one-step-ahead correlation and is")
+    print("    insensitive to tau >= 1; resolving the horizon dependence discussed")
+    print("    in S3.5 needs a non-Markov environment model (future work).")
+    print("  - The bottleneck is the experimental FRET-readout <-> M_t mapping and")
+    print("    the past-window choice for X_E^{<=t}, not the receptor count.")
     print()
-
-    exergetic = sweep_exergetic()
-    computational = sweep_computational()
-
-    report("eta_L (exergetic denominator)", exergetic)
-    report("eta_L (computational denominator)", computational)
-
-    print("Paper §3.5 ranges for comparison:")
-    print("  eta_L  in [1e-9, 1e-7]   (exergetic)")
-    print("  eta_L  in [1e-6, 1e-4]   (computational)")
+    print("Conclusion: eta_v = I_pred/I_mem is robust at O(0.1) across the")
+    print("plausible (tau_E, L, r) ranges; nostalgia nu = 1 - eta_v carries the")
+    print("complement. Consistent with main S3.5 and Supplementary S3.5.")
 
 
 if __name__ == "__main__":

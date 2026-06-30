@@ -1,43 +1,53 @@
 ========================================================================
-eta_L for E. coli chemotaxis loop — worked example
+eta_v = I_pred / I_mem for the E. coli chemotaxis loop -- worked example
 ========================================================================
 
-Inputs (point estimates via upper-bound I_pred = 10^4 bits;
-geometric medians of [1e-9,1e-7] / [1e-6,1e-4] sensitivity
-intervals are 1e-8 / 1e-5, used as reference in § 7):
-  T                     =    310.0    K
-  E_actual^total        = 1.00e-09  J / cell / generation
-  I_pred                = 1.00e+04  bits / cell / generation
-  eta_ex (exergetic)    = 1.00e+00
-  eta_ex (computational)= 1.00e-03
+I_mem is FINITE and eta_v = I_pred/I_mem in [0,1] by the data-processing
+inequality; nu = 1 - eta_v is nostalgia. Values in nats. Horizon tau = 5,
+past window L = 60, methylation-noise r = 0.3 (Supplementary S3.5).
 
-Derived:
-  k_B * T * ln 2        = 2.967e-21  J / bit
-  N_max  (exergetic)    = 3.371e+11  bits / cell
-  N_max  (computational)= 3.371e+08  bits / cell
+   tau_E beta_v    I_mem   I_pred   eta_v  nu (nostalgia)
+  ------------------------------------------------------
+       3   0.5   0.6047   0.0867   0.143           0.857
+       3   0.9   0.2974   0.0196   0.066           0.934
+       3  0.99   0.0325   0.0005   0.015           0.985
+      10   0.5   0.6865   0.3193   0.465           0.535
+      10   0.9   0.4993   0.1364   0.273           0.727
+      10  0.99   0.0921   0.0080   0.086           0.914
+      30   0.5   0.7166   0.5283   0.737           0.263
+      30   0.9   0.6312   0.3388   0.537           0.463
+      30  0.99   0.2026   0.0480   0.237           0.763
 
-Result:
-  eta_L  (exergetic)    = 2.967e-08
-  eta_L  (computational)= 2.967e-05
+Nostalgia grows when adaptation memory (beta_v) OUTPACES environment
+drift (tau_E): the cell over-integrates stale ligand, so the pure-
+ballast fraction rises -> eta_v falls, nu rises. Fixed tau_E = 5:
 
-Cross-check vs paper § 3.5 (point estimates via upper-bound
-I_pred = 10^4 bits; geometric medians of [1e-9,1e-7] / [1e-6,1e-4]
-ranges are 1e-8 / 1e-5):
-  eta_L  ~ 3e-8  (exergetic)         OK
-  eta_L  ~ 3e-5  (computational)     OK
+  beta_v   eta_v      nu
+  ----------------------
+     0.3   0.286   0.714
+     0.6   0.253   0.747
+     0.8   0.196   0.804
+     0.9   0.137   0.863
+    0.95   0.089   0.911
+    0.99   0.035   0.965
 
+Measurability: every quantity is a function of OBSERVABLE m<->s
+covariances. Example (tau_E = 10, beta_v = 0.9):
+  I_mem = 0.499 nats, I_pred = 0.136, eta_v = 0.273, var(m) = 0.814
+  I_mem depends only on Cov(m, s_k) and Cov(s_i, s_j) -- both estimable:
+  m via FRET methylation (Sourjik-Berg 2002; Cluzel et al. 2000),
+  s via microfluidics. The informational denominator is no harder to
+  measure than the calorimetric one.
 
-Cooperative-coupling scan (formula 1 with I_pred / k):
-------------------------------------------------------------------------
-    factor k    I_pred/k (bits)    eta_L (exer.)    eta_L (comp.)
-------------------------------------------------------------------------
-         1.0           1.00e+04        2.967e-08        2.967e-05
-         3.0           3.33e+03        9.889e-09        9.889e-06
-        10.0           1.00e+03        2.967e-09        2.967e-06
+Cross-check vs Supplementary S3.5 (eta_v ~ O(0.1); DPI gives eta_v<=1):
+  (tau_E=10, beta_v=0.5): I_mem~0.69, I_pred~0.32, eta_v~0.47   OK
+  (tau_E=10, beta_v=0.9): I_mem~0.50, I_pred~0.14, eta_v~0.27   OK
+  (tau_E=30, beta_v=0.9): I_mem~0.63, I_pred~0.34, eta_v~0.54   OK
+  (tau_E= 3, beta_v=0.9): I_mem~0.30, I_pred~0.02, eta_v~0.07   OK
+  beta_v-scan at tau_E=5: eta_v 0.286 -> 0.035 (paper 0.29 -> 0.035)   OK
+  all eta_v in [0,1] (data-processing inequality)   OK
 
-Note: cooperative coupling in receptor clusters reduces effective
-I_pred by ~1 order; lower bound of sensitivity interval [1e-9, 1e-7]
-is reached at factor k = 10 (matches § 3.5 lower bound).
-
-Status: methodological calibration. Sensitivity over four-order
-input ranges — see sensitivity.py.
+Status: illustrative worked example (minimal linear model). It shows
+the predictive fraction eta_v = I_pred/I_mem is finite, measurable, and
+O(0.1) for chemotactic memory -- not a calibrated value for real
+E. coli. Parameter sensitivity (tau, L, r) -- see sensitivity.py.

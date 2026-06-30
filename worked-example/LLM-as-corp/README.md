@@ -1,64 +1,67 @@
-# Worked Example: η_L for LLM-as-corporation
+# Worked Example: structural verdict for LLM-as-corporation
 
-A computation of the Landauer efficiency of self-modeling $\eta_L$ for an LLM under the extended boundary "model + data centre + corporation". Companion to § 3.4 of the paper «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality».
+A structural verdict for a large language model under the nested counterfactual-
+ablation boundaries $B_1 \subset B_2 \subset B_3 \subset B_4$, under the refounded
+central quantity $\eta_v = I_{\text{pred}}/I_{\text{mem}} \in [0,1]$. Companion to
+§ 3.4 + Supplementary § S3.4 (Andriishin, *Theory in Biosciences*, in preparation).
 
 ## What it means
 
-Paper § 3.4 distinguishes three readings of an LLM:
+The LLM is the strongest clean case of the new demarcation: a system with a
+**strong predictive model and $S = 0$**. The trained model is predictively strong
+(large $I_{\text{pred}}$), but its payment loop is open. Demarcation is carried by
+the self-payment predicate $S$, **not** by any energetic-efficiency ratio; the old
+$\eta^{\text{corp}}$ number is removed. Extending the boundary until $S = 1$ does
+**not** make the *model* vital — it re-addresses the self-paying subject.
 
-1. **Operational** "model + data centre": $\eta_L > 0$ by external metrics, but not self-payment.
-2. **Interpretive** "weights at the moment of inference": $\eta_L^{\text{int}}$ **undefined** — a simultaneous failure of $T_v^{\text{int}}$ (no causally relevant model of its own environment) and $C_v^{\text{int}}$ (no internal dissipation paying for the weights).
-3. **Boundary extension** "model + data centre + corporation": $\eta_L > 0$, but the measured object is the corporation, not the model.
+| Boundary | Components | Window | S | Self-paying subject |
+|----------|-----------|--------|---|---------------------|
+| $B_1$ | weights only | static | 0 | none (degenerate) |
+| $B_2$ | weights + KV-cache + executing server | session | 0 | none (grid pays) |
+| $B_3$ | $B_2$ + training pipeline (data + GPU park + RLHF) | model generation | 1 | pipeline (not model) |
+| $B_4$ | $B_3$ + corporation (legal entity) | generations | 1 | firm (not model) |
 
-This worked example operationalises the third reading: the corporation is treated as a socio-technical system, and $\eta_L^{\text{corp}}$ is computed via equation (1).
+- At $B_1, B_2$: $S = 0$ — the grid pays for holding/updating the model and there is no physical channel returning the model's error to its carrier.
+- At $B_3, B_4$: the loop closes ($S = 1$), but the self-paying subject is no longer the model — it is the pipeline, then the firm.
+
+So the **model is never vital**: where $S = 1$, the measured object is the
+corporation, not the model. The value of $\eta_v = I_{\text{pred}}/I_{\text{mem}}$
+for any of these loops is **not asserted** here — a number would require an MI
+estimate of $I_{\text{pred}}$ and $I_{\text{mem}}$ of the respective loop (future
+work). No $\eta^{\text{corp}}$ figure is claimed.
 
 ## Contents
 
 | File | Purpose |
 |------|---------|
-| `eta_L_llm_corp.py` | Computation of $\eta_L^{\text{corp}}$ via the exergetic denominator |
-| `expected_output.txt` | Reference output |
+| `eta_llm_corp.py` | Structural verdict over the nested boundaries $B_1$–$B_4$ (predicate $S$, self-paying subject) |
+| `expected_output.txt` | Reference output (LF) for verification |
+
+Uses only the Python standard library.
 
 ## Running
 
 ```bash
-python eta_L_llm_corp.py
+python eta_llm_corp.py
 ```
 
-## Parameters
+## Connection to the literature
 
-### Energy budget (frontier-AI lab, annual)
-- **Data centre:** $\sim 100$ MW continuous $= 3.15 \cdot 10^{15}$ J/year.
-- **Office and operations:** $\sim 10$ MW $= 3.15 \cdot 10^{14}$ J/year.
-- **Supply chain** (hardware manufacturing, logistics, amortization): $\sim 1$ GW $= 3.15 \cdot 10^{16}$ J/year.
-- **Total:** $E_{\text{actual}}^{\text{total}} \sim 3.5 \cdot 10^{16}$ J/year.
+The self-payment predicate $S$ offers a thermodynamic co-characterisation of the
+structural tendency studied in AI-safety as instrumental convergence /
+self-preservation (Omohundro 2008; Bostrom 2014) and as *embedded agency* (Demski
+& Garrabrant 2019: an agent as a part of its environment paying for its own
+computation). The pair $(S, \eta_v)$ is proposed as a necessary thermodynamic
+condition for a physically realised embedded world-model with its own robustness
+loop — not as a sufficient condition for any specific alignment property.
 
-### Predictive information
-- **Training corpus**, compressed into weights: $\sim 10^{12}$ bits (entropy of the training data $\times$ compression).
-- **Operational memory** (logs, customer interactions, documents): $\sim 10^{11}$ bits.
-- **Market intelligence** (research, competitive, regulatory): $\sim 10^{10}$ bits.
-- **Total:** $I_{\text{pred}} \sim 1.1 \cdot 10^{12}$ bits.
-
-### Other
-- $T = 300$ K (operating temperature; the standardised $T$ for the LLM / data centre, paper § 2.1).
-- $k_B T \ln 2 \approx 2.87 \cdot 10^{-21}$ J/bit.
-
-## Expected results
-
-- $N_{\text{max}}^{\text{ex}} = 3.5 \cdot 10^{16}/2.87 \cdot 10^{-21} \approx 1.22 \cdot 10^{37}$ bits/year.
-- $\eta_L^{\text{corp}} \text{(exergetic)} \approx 9 \cdot 10^{-26}$ — order $10^{-25}$ (upper bound, capacity-bound numerator).
-
-## Substantive conclusion
-
-1. Extending the LLM boundary to the corporation yields a **positive but catastrophically small** $\eta_L^{\text{corp}}$.
-2. The boundary-extension paradox: the larger the system, the smaller the $\eta_L$ — the scaling of $E_{\text{actual}}$ outpaces $I_{\text{pred}}$. The corporation has many orders of magnitude more absolute predictive information than a bacterial cell, but its energy budget grows even faster: most of the joules go to logistics, manufacturing, HVAC, and cooling overhead, not to the bit-flip operations that support holding its own model.
-3. This is a substantive result, not a defect of the procedure: "extending the responsible subject" (paper § 3.4) does not, quantitatively, make a large socio-technical system vitally comparable to the biological level.
-
-## Literature
-
-- **Patterson, D.; Gonzalez, J.; Le, Q.; Liang, C.; Munguia, L.-M.; Rothchild, D.; So, D.; Texier, M.; Dean, J.** Carbon Emissions and Large Neural Network Training. *arXiv preprint* **2021**, arXiv:2104.10350. (Energy footprint of frontier model training.)
-- **Bender, E. M.; Gebru, T.; McMillan-Major, A.; Shmitchell, S.** On the Dangers of Stochastic Parrots. *FAccT* **2021**. (Scale and infrastructure of major LLM operations.)
+- **Patterson, D.; et al.** Carbon Emissions and Large Neural Network Training. *arXiv:2104.10350* **2021**. (Scale of frontier-model training infrastructure.)
+- **Demski, A.; Garrabrant, S.** Embedded Agency. *arXiv:1902.09469* **2019**. (Agent as part of its environment, paying for its own computation.)
 
 ## Status
 
-Methodological calibration. The exact value of $I_{\text{pred}}^{\text{corp}}$ for corporate systems is a matter for separate work; the robustness of the order $\eta_L^{\text{corp}} \sim 10^{-25}$ holds while varying the inputs over plausible ranges. Paper § 3.4 gives, for the corporation, only the exergetic denominator (sign / capacity-bound upper bound); a computational reading for the corporation is not introduced in § 3.4.
+The verdict is **structural**: $S = 0$ on $B_1, B_2$ (weights / session), $S = 1$
+on $B_3, B_4$ with the subject re-addressed to the pipeline / firm. No
+$\eta^{\text{corp}}$ number is asserted; quantifying $\eta_v$ for the
+pipeline/corporation loop requires a separate MI estimate. Self-contained:
+standard library only.

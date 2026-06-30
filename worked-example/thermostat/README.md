@@ -1,61 +1,88 @@
-# Worked Example: η_L for a bimetallic thermostat
+# Worked Example: structural verdict for a bimetallic thermostat
 
-A computation of the Landauer efficiency of self-modeling $\eta_L$ for a household thermostat with a bimetallic strip. Companion to the paper "Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality" (§ 4.4 + Supplementary § S4.4).
+A structural verdict for a household thermostat with a bimetallic strip, under
+the refounded central quantity $\eta_v = I_{\text{pred}}/I_{\text{mem}} \in [0,1]$.
+Companion to § 4.4 + Supplementary § S4.4 (Andriishin, *Theory in Biosciences*,
+in preparation).
 
 ## Substantive meaning
 
-The thermostat is a **boundary case**, not a positive one. It *formally satisfies* Friston's free-energy principle (FEP) — it minimises the error between the setpoint and the observation — but it *does not satisfy the self-payment requirement*: the predictive information about the room is physically paid for by the external power grid, not by the internal dissipation of the bimetal.
+The thermostat is a **boundary case**, not a positive one. It *formally satisfies*
+Friston's free-energy principle (FEP) — it minimises the error between setpoint
+and observation — but it **fails the self-payment predicate** $S$: the predictive
+information about the room is physically paid for by the external power grid, not
+by the internal dissipation of the bimetal, and no physical error-return loop
+closes on the bimetal. So $S = 0$, and $\eta_v = I_{\text{pred}}/I_{\text{mem}}$ is
+**not defined** (there is no self-paying subject to measure it for).
 
-This is the **central anti-FEP argument** of the paper. In terms of the counterfactual ablation procedure (§ 2.2):
+This is the **central anti-FEP argument** of the paper: formal FEP-applicability
+does not imply self-payment. In terms of counterfactual ablation (§ 2.2):
 
 | Candidate | Inside the boundary? | Why |
 |-----------|----------------------|-----|
 | Bimetallic strip | yes | removing it breaks the loop |
-| Relay contact group | yes | removing it breaks the loop |
-| Heating element | no | removing it eliminates the heat source, not the decision loop |
+| Relay contacts | yes | removing it breaks the loop |
+| Heating element | no | removes the heat source, not the decision loop |
 | Electric grid | no | external energy source |
-| External setpoint operator | no | removing it does not disrupt the regulation |
+| External setpoint operator | no | removing it does not disrupt regulation |
 
-The boundary is `{bimetal, relay}`. Within it, $E_{\text{actual}} \sim 10^{-6}$ W.
+The boundary is `{bimetal, relay}`, inside which the internal dissipation is
+$P_{\text{int}} \sim 10^{-6}$ W.
 
 ## Contents
 
 | File | Purpose |
 |------|---------|
-| `eta_L_thermostat.py` | Computation of the two readings of η_L (trivial vs. managing) |
-| `expected_output.txt` | Reference output for verification |
+| `eta_thermostat.py` | Structural verdict: counterfactual ablation, surviving quantities, two readings (both $S=0$) |
+| `expected_output.txt` | Reference output (LF) for verification |
+
+Uses only the Python standard library (`math`).
 
 ## Running
 
 ```bash
-python eta_L_thermostat.py
+python eta_thermostat.py
 ```
 
-## Parameters
+## Surviving quantities (these outlive the refounding; match § 4.4)
 
-- $T_{\text{room}} = 300$ K — room temperature (the receiving heat bath of Landauer).
-- $\Delta T_{\text{room}} = 10$ K — the range of variation of the room temperature.
-- $\Delta T_{\text{hyst}} = 1$ K — the hysteresis of the bimetallic switch.
-- $\tau_d = 1800$ s (30 min) — the characteristic dissipation window (thermal inertia).
-- $P_{\text{int}} = 10^{-6}$ W — internal dissipation (elastic relaxation of the bimetal + relay).
+- $P_{\text{int}} \sim 10^{-6}$ W — internal dissipation (elastic relaxation of the bimetal + relay).
+- Carrier bound on predictive information set by the hysteresis resolution:
+  $I_{\text{pred}} \le \log_2(\Delta T_{\text{room}}/\Delta T_{\text{hyst}})$.
+  Diurnal $\Delta T_{\text{room}} \sim 10$ K, $\Delta T_{\text{hyst}} = 1$ K
+  $\Rightarrow I_{\text{pred}} \le 3.32$ bits ($\approx 3$); seasonal
+  $\Delta T_{\text{room}} \sim 30$ K $\Rightarrow I_{\text{pred}} \le 4.91$ bits
+  (up to $\sim 5$).
 
-## Expected results
+Everything tied to the earlier energetic-denominator ratio is removed: $P_{\text{int}}$
+is reported as a physical dissipation, not as the denominator of an efficiency.
 
-- $I_{\text{pred}} \le \log_2(10/1) \approx 3.32$ bits (paper bound: ≤ 5 bits).
-- $E_{\text{actual}}^{\text{int}} = 10^{-6} \cdot 1800 = 1.8 \cdot 10^{-3}$ J.
-- $N_{\text{max}} = E_{\text{actual}}^{\text{int}} / (k_B T \ln 2) \approx 6.4 \cdot 10^{17}$ bits.
-- $\eta_L^{\text{trivial}}$ (holding the bimetal's own shape) $\approx 5.2 \cdot 10^{-18}$ — vanishing, but positive.
-- $\eta_L^{\text{managing}}$ (regulating the room) $= 0$ — the numerator refers to the environment "room + power supply", while the denominator refers only to the bimetal's own dissipation.
+## Two self-consistent readings, both S = 0
 
-The difference between the two numbers is structural, not quantitative: it marks the transition from a Pearl-blanket to a Friston-blanket in the sense of Bruineberg, Dołęga, Dewhurst, Baltieri 2021/2022 ("The Emperor's New Markov Blankets", the mature formalisation of the Pearl-/Friston-blanket distinction), as distinct from Bruineberg, Kiverstein, Rietveld 2018 (the ecological-enactive critique of pure FEP, "The anticipating brain is not a scientist"). One and the same physical system admits several self-consistent boundaries; the choice between them is the methodological discipline of self-payment.
+- **Managing** ("regulate the room"): condition (i) of self-payment fails — the
+  room heating is paid by the external grid, so $E_{\text{own}}$ about that task is
+  zero ($T_v$ fails).
+- **Trivial** ("hold the bimetal's own shape"): condition (ii) fails — passive
+  thermo-mechanical coupling forms no error-return loop; a shape deviation is not
+  corrected by the system's own dissipation ($S_v$ fails).
+
+The divergence between the two readings does **not** mark an ontological
+transition: Bruineberg et al. (2022) show formally that no such transition can be
+made without smuggling in epistemic assumptions. It marks the **conventionality**
+of boundary choice — one physical system admits several self-consistent
+boundaries, and choosing between them is a methodological discipline.
 
 ## References
 
-- **Bruineberg, J.; Dołęga, K.; Dewhurst, J.; Baltieri, M.** The Emperor's New Markov Blankets. *Synthese* **2022**, *199*, 13727–13772. (The mature formalisation of the Pearl-/Friston-blanket distinction — `[Bruineberg2022]` in the paper.)
-- **Bruineberg, J.; Kiverstein, J.; Rietveld, E.** The anticipating brain is not a scientist: the free-energy principle from an ecological-enactive perspective. *Synthese* **2018**, *195*, 2417–2444. (The ecological-enactive critique of pure FEP — `[Bruineberg2018]` in the paper.)
+- **Bruineberg, J.; Dołęga, K.; Dewhurst, J.; Baltieri, M.** The Emperor's New Markov Blankets. *Behavioral and Brain Sciences* **2022**, *45*, e183. (Pearl- vs Friston-blanket; no ontological transition without epistemic assumptions.)
 - **Friston, K.** The free-energy principle: a unified brain theory? *Nat. Rev. Neurosci.* **2010**, *11*, 127–138.
 - **Aguilera, M.; Millidge, B.; Tschantz, A.; Buckley, C. L.** How particular is the physics of the free energy principle? *Phys. Life Rev.* **2022**, *40*, 24–50.
 
 ## Status
 
-The computation is compact (10–15 lines of accounting); its role in the reproducibility of the paper is not quantitative but **demonstrative**: it shows that the counterfactual ablation procedure is trivially realisable, and that distinguishing the "trivial" vs. "managing" readings is computable, not rhetorical.
+A compact structural accounting; its role is **demonstrative**, not quantitative:
+it shows that the counterfactual-ablation procedure is trivially realisable, that
+the "trivial" vs "managing" readings are computable rather than rhetorical, and
+that both yield $S = 0$ — so $\eta_v$ is undefined. A numeric $\eta_v$ would require an
+MI estimate of $I_{\text{pred}}$ and $I_{\text{mem}}$ of a self-paying loop, which
+the thermostat does not possess.
